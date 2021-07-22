@@ -1,3 +1,3 @@
 export interface EditorProps {
-  defaultValue?: object;
+  defaultValue?: Array<object>;
 }
