@@ -14,7 +14,7 @@ export interface onChangeFunc {
 }
 
 export type ParagraphProps = {
-  defaultValue?: Data;
+  value: Data;
   onChange: onChangeFunc;
   className?: string;
 };

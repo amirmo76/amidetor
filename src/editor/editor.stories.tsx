@@ -12,7 +12,7 @@ export const withDefaultValue = () => (
     defaultValue={[
       {
         type: 'paragraph',
-        children: [{ text: 'hello' }],
+        children: [{ text: 'This is a paragraph' }],
       },
     ]}
   />
