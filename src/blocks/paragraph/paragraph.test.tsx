@@ -1,0 +1,1 @@
+describe('Paragraph Component', () => {});

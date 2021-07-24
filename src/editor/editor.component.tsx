@@ -23,10 +23,11 @@ const Editor = ({ defaultValue }: EditorProps) => {
       {defaultValue?.map((block, i) => {
         if (block.type === PARAGRAPH_TYPE) {
           return (
-            <div key={i}>
+            <div key={i} className="amidetor__block-wrapper">
               <Paragraph
                 defaultValue={block as ParagraphData}
                 onChange={(newData: Block) => newDataHandler(i, newData)}
+                className="amidetor__block"
               />
             </div>
           );

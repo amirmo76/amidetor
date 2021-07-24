@@ -14,13 +14,14 @@ const buildData = (pNode: HTMLElement, callBack: onChangeFunc) => {
   callBack(newData);
 };
 
-const Paragraph = ({ defaultValue, onChange }: ParagraphProps) => {
+const Paragraph = ({ defaultValue, onChange, className }: ParagraphProps) => {
   return (
     <p
       onBlur={(e) => buildData(e.target, onChange)}
       contentEditable
       suppressContentEditableWarning
       onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
+      className={`${className} amidetor__paragraph`}
     >
       {defaultValue?.children.map((node, index) => (
         <span key={index}>{node.text}</span>

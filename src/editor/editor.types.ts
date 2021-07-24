@@ -1,8 +1,8 @@
 export type Block = {
   readonly type: string;
-  children: Array<object>;
+  children: object[];
 };
 
 export type EditorProps = {
-  defaultValue?: Array<Block>;
+  defaultValue?: Block[];
 };
