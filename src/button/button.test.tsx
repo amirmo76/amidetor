@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import Button from './button.component';
 import { ButtonProps } from './button.types';
@@ -26,8 +27,18 @@ describe('Button Component', () => {
 
   const renderComponent = () => render(<Button {...props} />);
 
-  it('should render button with an svg', () => {
+  it('should render the button with an svg', () => {
     const { getByRole } = renderComponent();
-    getByRole('button');
+    const button = getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button.childNodes[0]).toBeInstanceOf(SVGElement);
+  });
+
+  it('should fire the callback function on click', () => {
+    const onClickFunc = jest.fn();
+    const { getByRole } = render(<Button {...props} onClick={onClickFunc} />);
+    const button = getByRole('button');
+    userEvent.click(button);
+    expect(onClickFunc).toHaveBeenCalled();
   });
 });
