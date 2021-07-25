@@ -4,6 +4,8 @@
     flex-grow: 1;
     margin: 0;
     margin-left: 15px;
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: 10px;
     &:focus {
       box-shadow: rgba(0, 0, 0, 0.05) 0px 3px 10px;
     }
@@ -11,6 +13,10 @@
 
   &__block-wrapper {
     display: flex;
+
+    &:not(:last-child) {
+      margin-bottom: 25px;
+    }
   }
 
   &__actions {

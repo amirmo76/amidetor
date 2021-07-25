@@ -12,7 +12,16 @@ export const withDefaultValue = () => (
     defaultValue={[
       {
         type: 'paragraph',
-        children: [{ text: 'This is a paragraph' }],
+        children: [
+          {
+            text:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          },
+          {
+            text:
+              ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Scelerisque eu ultrices vitae auctor. Id faucibus nisl tincidunt eget. Elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Amet purus gravida quis blandit turpis cursus in. Dolor magna eget est lorem. Diam in arcu cursus euismod quis viverra nibh cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Ornare arcu odio ut sem nulla pharetra diam sit amet. Duis at tellus at urna condimentum mattis pellentesque. Euismod nisi porta lorem mollis aliquam. Nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur.',
+          },
+        ],
       },
     ]}
   />

@@ -21,6 +21,9 @@ const Editor = ({ defaultValue }: EditorProps) => {
     }
   };
 
+  const removeBlock = (index: number): void =>
+    setData(data?.filter((_, i) => i !== index));
+
   return (
     <div data-testid="amidetor" className="amidetor">
       {data?.map((block, i) => {
@@ -36,12 +39,8 @@ const Editor = ({ defaultValue }: EditorProps) => {
                   onClick={() => console.log('Clicked the settings button')}
                   Icon={SettingsIcon}
                 />
-                <Button
-                  onClick={() => console.log('Clicked the delete button')}
-                  Icon={DeleteIcon}
-                />
+                <Button onClick={() => removeBlock(i)} Icon={DeleteIcon} />
               </div>
-              <p>{JSON.stringify(block)}</p>
               <Paragraph
                 value={block as ParagraphData}
                 onChange={(newData: Block) => newDataHandler(i, newData)}
