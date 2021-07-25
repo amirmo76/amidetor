@@ -4,7 +4,7 @@ import './paragraph.styles.scss';
 
 export const TYPE = 'paragraph';
 
-function getData(pNode: HTMLParagraphElement): Data {
+export function getData(pNode: HTMLParagraphElement): Data {
   const newData: Data = {
     type: 'paragraph',
     children: Array.from(pNode.childNodes).map((node) => ({
@@ -14,10 +14,18 @@ function getData(pNode: HTMLParagraphElement): Data {
   return newData;
 }
 
-function getHTML(data: Data): string {
+export function escape(str: string): string {
+  let out = str;
+  out = out.replace(/&/g, '&amp;');
+  out = out.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  out = out.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+  return out;
+}
+
+export function getHTML(data: Data): string {
   let html = '';
   data.children.map((node) => {
-    if (node.text) html += `<span>${node.text}</span>`;
+    if (node.text) html += `<span>${escape(node.text)}</span>`;
   });
   return html;
 }
@@ -39,9 +47,10 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
     contentEditable: editable,
     suppressContentEditableWarning: true,
     onKeyDown: keyHandle,
-    className: `${className} amidetor__paragraph`,
+    className: `${className ? className + ' ' : ''}amidetor__paragraph`,
     onClick: () => setEditable(true),
     dangerouslySetInnerHTML: { __html: getHTML(value) },
+    onBlur: () => ref.current && onChange(getData(ref.current)),
   });
 }
 
