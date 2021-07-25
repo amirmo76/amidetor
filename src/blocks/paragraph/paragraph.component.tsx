@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState, useRef, useEffect } from 'react';
+import React, { KeyboardEvent, useState, useRef } from 'react';
 import { ParagraphProps, Data } from './paragraph.types';
 import './paragraph.styles.scss';
 
