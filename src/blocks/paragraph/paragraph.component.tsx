@@ -1,4 +1,5 @@
 import React, { KeyboardEvent, useState, useRef } from 'react';
+import CSS from 'csstype';
 import { ParagraphProps, Data } from './paragraph.types';
 import './paragraph.styles.scss';
 
@@ -42,16 +43,26 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
     }
   };
 
-  return React.createElement('p', {
-    ref: ref,
-    contentEditable: editable,
-    suppressContentEditableWarning: true,
-    onKeyDown: keyHandle,
-    className: `${className ? className + ' ' : ''}amidetor__paragraph`,
-    onClick: () => setEditable(true),
-    dangerouslySetInnerHTML: { __html: getHTML(value) },
-    onBlur: () => ref.current && onChange(getData(ref.current)),
-  });
+  const styles: CSS.Properties = {
+    direction: value.direction,
+    textAlign: value.textAlign,
+  };
+
+  return (
+    <div className="amidetor__paragraph-wrapper">
+      {React.createElement('p', {
+        ref: ref,
+        contentEditable: editable,
+        suppressContentEditableWarning: true,
+        onKeyDown: keyHandle,
+        className: `${className ? className + ' ' : ''}amidetor__paragraph`,
+        onClick: () => setEditable(true),
+        dangerouslySetInnerHTML: { __html: getHTML(value) },
+        style: styles,
+        onBlur: () => ref.current && onChange(getData(ref.current)),
+      })}
+    </div>
+  );
 }
 
 export function getEmptyBlock(): Data {

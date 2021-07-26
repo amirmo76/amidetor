@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 
 import Paragraph, { getData, getHTML } from './paragraph.component';
 import { ParagraphProps, Data } from './paragraph.types';
@@ -50,6 +50,48 @@ describe('Paragraph Component', () => {
     );
     const el = getByText(/Hello/, { exact: true }).parentNode;
     expect(el).toHaveClass('test_class', 'amidetor__paragraph');
+  });
+
+  it('should apply text direction setting correctly', () => {
+    const { getByText } = render(<Paragraph {...props} />);
+    const pElement = getByText(/Hello/, { exact: false }).parentElement;
+    expect(pElement?.style.direction).toBe('');
+
+    cleanup();
+    props.value.direction = 'rtl';
+    const { getByText: getByText2 } = render(<Paragraph {...props} />);
+    const pElement2 = getByText2(/Hello/, { exact: false }).parentElement;
+    expect(pElement2?.style.direction).toBe('rtl');
+
+    cleanup();
+    props.value.direction = 'ltr';
+    const { getByText: getByText3 } = render(<Paragraph {...props} />);
+    const pElement3 = getByText3(/Hello/, { exact: false }).parentElement;
+    expect(pElement3?.style.direction).toBe('ltr');
+  });
+
+  it('should apply text align setting correctly', () => {
+    const { getByText } = render(<Paragraph {...props} />);
+    const pElement = getByText(/Hello/, { exact: false }).parentElement;
+    expect(pElement?.style.textAlign).toBe('');
+
+    cleanup();
+    props.value.textAlign = 'left';
+    const { getByText: getByText2 } = render(<Paragraph {...props} />);
+    const pElement2 = getByText2(/Hello/, { exact: false }).parentElement;
+    expect(pElement2?.style.textAlign).toBe('left');
+
+    cleanup();
+    props.value.textAlign = 'center';
+    const { getByText: getByText3 } = render(<Paragraph {...props} />);
+    const pElement3 = getByText3(/Hello/, { exact: false }).parentElement;
+    expect(pElement3?.style.textAlign).toBe('center');
+
+    cleanup();
+    props.value.textAlign = 'right';
+    const { getByText: getByText4 } = render(<Paragraph {...props} />);
+    const pElement4 = getByText4(/Hello/, { exact: false }).parentElement;
+    expect(pElement4?.style.textAlign).toBe('right');
   });
 });
 
