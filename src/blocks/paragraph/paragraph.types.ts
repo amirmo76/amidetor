@@ -5,7 +5,7 @@ export type Child = {
 export type Data = {
   readonly type: 'paragraph';
   children: Child[];
-  rtl?: boolean;
+  direction?: 'rtl' | 'ltr';
   textAlign?: 'left' | 'center' | 'right';
 };
 
