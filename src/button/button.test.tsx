@@ -22,6 +22,8 @@ describe('Button Component', () => {
         </svg>
       ),
       onClick: () => {},
+      label: 'test button',
+      active: true,
     };
   });
 
@@ -40,5 +42,19 @@ describe('Button Component', () => {
     const button = getByRole('button');
     userEvent.click(button);
     expect(onClickFunc).toHaveBeenCalled();
+  });
+
+  it('should apply the label', () => {
+    const { getByRole } = renderComponent();
+    const button = getByRole('button', {
+      name: props.label,
+    }) as HTMLButtonElement;
+    expect(button).toBeInTheDocument();
+  });
+
+  it('should apply active styles', () => {
+    const { getByRole } = renderComponent();
+    const button = getByRole('button');
+    expect(button.classList.contains('amidetor__button--active')).toBe(true);
   });
 });

@@ -26,4 +26,7 @@ const SampleIcon = () => (
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = { Icon: SampleIcon };
+Primary.args = { Icon: SampleIcon, label: 'test' };
+
+export const Active = Template.bind({});
+Active.args = { Icon: SampleIcon, label: 'test', active: true };

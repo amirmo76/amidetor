@@ -6,7 +6,7 @@ import Paragraph, {
   getEmptyBlock as getEmptyParagraphBlock,
 } from '../blocks/paragraph';
 import Button from '../button';
-import { PlusIcon, SettingsIcon, DeleteIcon } from './editor.icons';
+import { PlusIcon, DeleteIcon } from './editor.icons';
 import './editor.styles.scss';
 
 const Editor = ({ defaultValue }: EditorProps) => {
@@ -32,14 +32,15 @@ const Editor = ({ defaultValue }: EditorProps) => {
             <div key={i} className="amidetor__block-wrapper">
               <div className="amidetor__actions">
                 <Button
+                  label="add a new block"
                   onClick={() => console.log('Clicked the plus button')}
                   Icon={PlusIcon}
                 />
                 <Button
-                  onClick={() => console.log('Clicked the settings button')}
-                  Icon={SettingsIcon}
+                  label="delete block"
+                  onClick={() => removeBlock(i)}
+                  Icon={DeleteIcon}
                 />
-                <Button onClick={() => removeBlock(i)} Icon={DeleteIcon} />
               </div>
               <Paragraph
                 value={block as ParagraphData}
