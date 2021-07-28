@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Selection from './selection.component';
-import { SelectionProps } from './selection.types';
+import Selectable from './selectable.component';
+import { SelectableProps } from './selectable.types';
 
 describe('Selection Component', () => {
-  let props: SelectionProps;
+  let props: SelectableProps;
 
   beforeEach(() => {
     props = {
@@ -14,9 +14,9 @@ describe('Selection Component', () => {
 
   it('should render the element with children', () => {
     const { getByText } = render(
-      <Selection {...props}>
+      <Selectable {...props}>
         <p>Hello World!</p>
-      </Selection>
+      </Selectable>
     );
     expect(getByText(/Hello World!/)).toBeInTheDocument();
   });
@@ -24,9 +24,9 @@ describe('Selection Component', () => {
   // it('should fire onSelect on text selection', () => {
   //   const onSelect = jest.fn();
   //   const { getByText } = render(
-  //     <Selection {...props} onSelect={onSelect}>
+  //     <Selectable {...props} onSelect={onSelect}>
   //       <p>Hello World!</p>
-  //     </Selection>
+  //     </Selectable>
   //   );
   //   const pElement = getByText(/Hello World!/);
   //   userEvent.type(pElement, '{selectAll}');
@@ -36,7 +36,7 @@ describe('Selection Component', () => {
   // it('should tell which part of the text has been selected', () => {
   //   const onSelect = jest.fn();
   //   const { getByText } = render(
-  //     <Selection {...props} onSelect={onSelect}>
+  //     <Selectable {...props} onSelect={onSelect}>
   //       <p>
   //         <span>This</span>
   //         <span> is a </span>
@@ -44,7 +44,7 @@ describe('Selection Component', () => {
   //         <span>text</span>
   //         <span>!</span>
   //       </p>
-  //     </Selection>
+  //     </Selectable>
   //   );
   //   const pElement = getByText(/This/).parentElement;
   //   if (!pElement) return;
@@ -52,7 +52,7 @@ describe('Selection Component', () => {
   //     pElement,
   //     '{selectAll}{arrowleft}{arrowleft}{arrowleft}{arrowleft}'
   //   );
-  //   let expectedReturn: SelectedInfo = {
+  //   let expectedReturn: SelectableInfo = {
   //     anchorIndex: 0,
   //     anchorOffset: 0,
   //     focusIndex: 3,

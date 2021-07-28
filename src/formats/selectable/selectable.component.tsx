@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SelectedInfo, SelectionProps } from './selection.types';
+import { SelectableInfo, SelectableProps } from './selectable.types';
 
 export function getNodeIndex(node: Node): number {
   let index: number = 0;
@@ -11,7 +11,7 @@ export function getNodeIndex(node: Node): number {
   return index;
 }
 
-const Selection: React.FunctionComponent<SelectionProps> = ({
+const Selectable: React.FunctionComponent<SelectableProps> = ({
   children,
   onSelect,
 }) => {
@@ -33,7 +33,7 @@ const Selection: React.FunctionComponent<SelectionProps> = ({
     const focusIndex = focusNode.parentNode
       ? getNodeIndex(focusNode.parentNode)
       : 0;
-    const info: SelectedInfo = {
+    const info: SelectableInfo = {
       anchorIndex,
       focusIndex,
       anchorOffset,
@@ -49,4 +49,4 @@ const Selection: React.FunctionComponent<SelectionProps> = ({
   );
 };
 
-export default Selection;
+export default Selectable;
