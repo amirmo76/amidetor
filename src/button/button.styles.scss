@@ -8,6 +8,10 @@
   height: 40px;
   background-color: white;
 
+  svg {
+    fill: grey;
+  }
+
   &--active {
     svg {
       fill: rgb(52, 116, 255);
