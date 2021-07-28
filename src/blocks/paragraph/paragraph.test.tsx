@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import Paragraph, { getData, getHTML } from './paragraph.component';
 import { ParagraphProps, Data } from './paragraph.types';
@@ -92,6 +93,56 @@ describe('Paragraph Component', () => {
     const { getByText: getByText4 } = render(<Paragraph {...props} />);
     const pElement4 = getByText4(/Hello/, { exact: false }).parentElement;
     expect(pElement4?.style.textAlign).toBe('right');
+  });
+
+  it('should call onChange function with applied settings', () => {
+    const onChangeFunc = jest.fn();
+    const { getByRole } = render(
+      <Paragraph {...props} onChange={onChangeFunc} />
+    );
+    const LtrBtn = getByRole('button', {
+      name: 'left to right text direction',
+    });
+    const RtlBtn = getByRole('button', {
+      name: 'right to left text direction',
+    });
+    const TxtAlignLeft = getByRole('button', {
+      name: 'left text align',
+    });
+    const TxtAlignCenter = getByRole('button', {
+      name: 'center text align',
+    });
+    const TxtAlignRight = getByRole('button', {
+      name: 'right text align',
+    });
+
+    userEvent.click(LtrBtn);
+    let expectedObj: Data = {
+      type: 'paragraph',
+      children: props.value.children,
+      direction: 'ltr',
+    };
+    expect(onChangeFunc).lastCalledWith(expectedObj);
+
+    userEvent.click(RtlBtn);
+    expectedObj.direction = 'rtl';
+    expect(onChangeFunc).lastCalledWith(expectedObj);
+
+    expectedObj = {
+      type: 'paragraph',
+      children: props.value.children,
+    };
+    userEvent.click(TxtAlignLeft);
+    expectedObj.textAlign = 'left';
+    expect(onChangeFunc).lastCalledWith(expectedObj);
+
+    userEvent.click(TxtAlignCenter);
+    expectedObj.textAlign = 'center';
+    expect(onChangeFunc).lastCalledWith(expectedObj);
+
+    userEvent.click(TxtAlignRight);
+    expectedObj.textAlign = 'right';
+    expect(onChangeFunc).lastCalledWith(expectedObj);
   });
 });
 

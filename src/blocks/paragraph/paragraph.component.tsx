@@ -1,6 +1,19 @@
 import React, { KeyboardEvent, useState, useRef } from 'react';
 import CSS from 'csstype';
-import { ParagraphProps, Data } from './paragraph.types';
+import Button from '../../button';
+import {
+  ParagraphProps,
+  Data,
+  SettingKeys,
+  SettingsValues,
+} from './paragraph.types';
+import {
+  RtlIcon,
+  LtrIcon,
+  TextAlignCenterIcon,
+  TextAlignRightIcon,
+  TextAlignLeftIcon,
+} from './paragraph.icons';
 import './paragraph.styles.scss';
 
 export const TYPE = 'paragraph';
@@ -39,8 +52,18 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
     if (e.key === 'Enter') e.preventDefault();
     if (e.key === 'Escape') {
       setEditable(false);
-      if (ref.current) onChange(getData(ref.current));
+      if (ref.current) onChange({ ...value, ...getData(ref.current) });
     }
+  };
+
+  const updateSettings = (key: SettingKeys, val: SettingsValues): void => {
+    if (!ref.current) return;
+    const newData: Data = {
+      ...value,
+      ...getData(ref.current),
+      [key]: val,
+    };
+    onChange(newData);
   };
 
   const styles: CSS.Properties = {
@@ -50,6 +73,38 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
 
   return (
     <div className="amidetor__paragraph-wrapper">
+      <div className="amidetor__paragraph-settings">
+        <Button
+          Icon={TextAlignLeftIcon}
+          onClick={() => updateSettings('textAlign', 'left')}
+          label="left text align"
+          active={value.textAlign === 'left'}
+        />
+        <Button
+          Icon={TextAlignCenterIcon}
+          onClick={() => updateSettings('textAlign', 'center')}
+          label="center text align"
+          active={value.textAlign === 'center'}
+        />
+        <Button
+          Icon={TextAlignRightIcon}
+          onClick={() => updateSettings('textAlign', 'right')}
+          label="right text align"
+          active={value.textAlign === 'right'}
+        />
+        <Button
+          Icon={LtrIcon}
+          onClick={() => updateSettings('direction', 'ltr')}
+          label="left to right text direction"
+          active={value.direction === 'ltr'}
+        />
+        <Button
+          Icon={RtlIcon}
+          onClick={() => updateSettings('direction', 'rtl')}
+          label="right to left text direction"
+          active={value.direction === 'rtl'}
+        />
+      </div>
       {React.createElement('p', {
         ref: ref,
         contentEditable: editable,
@@ -59,7 +114,8 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
         onClick: () => setEditable(true),
         dangerouslySetInnerHTML: { __html: getHTML(value) },
         style: styles,
-        onBlur: () => ref.current && onChange(getData(ref.current)),
+        onBlur: () =>
+          ref.current && onChange({ ...value, ...getData(ref.current) }),
       })}
     </div>
   );

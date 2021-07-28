@@ -1,7 +1,15 @@
-.amidetor__paragraph {
-  padding: 20px 10px;
-}
+.amidetor {
+  &__paragraph {
+    padding: 20px 10px;
+  }
 
-.amidetor__paragraph-wrapper {
-  flex-grow: 1;
+  &__paragraph-wrapper {
+    flex-grow: 1;
+  }
+
+  &__paragraph-settings {
+    margin-bottom: 10px;
+    border: 1px solid rgb(240, 240, 240);
+    display: flex;
+  }
 }
