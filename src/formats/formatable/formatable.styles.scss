@@ -4,13 +4,11 @@
   }
 
   &__formatable-menu {
-    width: 150px;
-    height: 50px;
-    background-color: rosybrown;
+    background-color: white;
+    border: 1px solid rgb(240, 240, 240);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
     position: absolute;
     display: flex;
-    align-items: center;
-    justify-content: center;
     transform: translateX(-50%);
   }
 
