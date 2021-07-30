@@ -31,7 +31,6 @@ const Formatable: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     if (selectionInfo) setShowMenu(true);
-    console.log(selectionInfo);
     const selection = window.getSelection();
     if (!selection) return;
 
@@ -70,12 +69,10 @@ const Formatable: React.FunctionComponent = ({ children }) => {
     if (!selectionInfo) setShowMenu(false);
   }, [selectionInfo]);
 
-  const mouseUpHandle = () => {
-    console.log('mouseup');
+  const checkForSelection = () => {
     const selection = window.getSelection();
     try {
       const range = selection?.getRangeAt(0);
-      console.log('range', range);
       if (!range) {
         setSelectionInfo(null);
         return;
@@ -106,7 +103,7 @@ const Formatable: React.FunctionComponent = ({ children }) => {
         onClick={() => setShowMenu(false)}
       />
       <div className="amidetor__formatable" ref={ref}>
-        <div onMouseUp={mouseUpHandle}>{children}</div>
+        <div onMouseUp={checkForSelection}>{children}</div>
         {showMenu && (
           <div
             className="amidetor__formatable-menu"
