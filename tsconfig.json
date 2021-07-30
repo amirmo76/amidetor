@@ -24,6 +24,8 @@
     "build",
     "src/**/*.stories.tsx",
     "src/**/*.test.tsx",
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.spec.ts"
   ]
 }
