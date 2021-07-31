@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 type setSelectionParam = {
   query: string;
   offset: number;

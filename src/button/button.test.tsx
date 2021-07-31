@@ -1,60 +1,32 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
-import Button from './button.component';
-import { ButtonProps } from './button.types';
+import { mount } from '@cypress/react';
+import * as Stories from './button.stories';
 
 describe('Button Component', () => {
-  let props: ButtonProps;
-
-  beforeEach(() => {
-    props = {
-      Icon: () => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-        </svg>
-      ),
-      onClick: () => {},
-      label: 'test button',
-      active: true,
-    };
-  });
-
-  const renderComponent = () => render(<Button {...props} />);
-
   it('should render the button with an svg', () => {
-    const { getByRole } = renderComponent();
-    const button = getByRole('button');
-    expect(button).toBeInTheDocument();
-    expect(button.childNodes[0]).toBeInstanceOf(SVGElement);
+    mount(<Stories.Primary />);
+    cy.get('svg').should('be.visible');
   });
 
   it('should fire the callback function on click', () => {
-    const onClickFunc = jest.fn();
-    const { getByRole } = render(<Button {...props} onClick={onClickFunc} />);
-    const button = getByRole('button');
-    userEvent.click(button);
-    expect(onClickFunc).toHaveBeenCalled();
+    const onClickFunc = cy.stub();
+    mount(<Stories.Primary customOnClick={onClickFunc} />);
+    cy.get('button')
+      .click()
+      .then(() => {
+        expect(onClickFunc).to.have.been.calledOnce;
+      });
   });
 
   it('should apply the label', () => {
-    const { getByRole } = renderComponent();
-    const button = getByRole('button', {
-      name: props.label,
-    }) as HTMLButtonElement;
-    expect(button).toBeInTheDocument();
+    mount(<Stories.Primary />);
+    cy.get('button').then(($el) => {
+      expect($el[0]).to.have.attr('aria-label').match(/test/);
+    });
   });
 
   it('should apply active styles', () => {
-    const { getByRole } = renderComponent();
-    const button = getByRole('button');
-    expect(button.classList.contains('amidetor__button--active')).toBe(true);
+    mount(<Stories.Active />);
+    cy.get('button').should('have.class', 'amidetor__button--active');
   });
 });

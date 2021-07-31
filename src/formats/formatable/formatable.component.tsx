@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { MenuPosition, SelectionInfo } from './formatable.types';
+import {
+  MenuPosition,
+  SelectionInfo,
+  FormatableProps,
+} from './formatable.types';
 import './formatable.styles.scss';
 
 /**
@@ -18,7 +22,12 @@ export function getNodeIndex(node: Node): number {
   return index;
 }
 
-const Formatable: React.FunctionComponent = ({ children }) => {
+const Formatable: React.FunctionComponent<FormatableProps> = ({
+  children,
+  formatters,
+  value,
+  onChange,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [showMenu, setShowMenu] = useState<boolean>(true);
   const [menuPosition, setMenuPosition] = useState<MenuPosition>({
@@ -113,7 +122,17 @@ const Formatable: React.FunctionComponent = ({ children }) => {
             }}
             role="menu"
           >
-            The Format Menu
+            {formatters.length > 0 ? (
+              formatters.map((formatter, i) => (
+                <formatter.Component
+                  key={i}
+                  value={value}
+                  onChange={onChange}
+                />
+              ))
+            ) : (
+              <p>No Formatter Found</p>
+            )}
           </div>
         )}
       </div>

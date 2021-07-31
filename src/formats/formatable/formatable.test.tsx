@@ -1,39 +1,97 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import Formatable, { getNodeIndex } from './formatable.component';
+import { mount } from '@cypress/react';
+import * as Stories from './formatable.stories';
+import { setSelection } from '../../helpers';
+import { getNodeIndex } from './formatable.component';
 
-describe('Fromatable Component', () => {
-  const children = (
-    <p>
-      <span>My</span>
-      <span> Name is </span>
-      <span>Amir Mohseni Moghadam</span>
-    </p>
+function selectSomething() {
+  return setSelection(
+    'p',
+    {
+      query: 'My',
+      offset: 1,
+    },
+    {
+      query: 'Amir',
+      offset: 10,
+    }
   );
+}
 
-  it('should render the given children', () => {
-    const { getByText } = render(<Formatable>{children}</Formatable>);
-    expect(getByText(/My/)).toBeInTheDocument();
-    expect(getByText(/Amir Mohseni Moghadam/)).toBeInTheDocument();
+describe('Formatable Component', () => {
+  it('should mount the given children', () => {
+    mount(<Stories.Primary />);
+    cy.contains('My Name').should('be.visible');
+  });
+
+  it('should show a menu on selection with mouse', () => {
+    mount(<Stories.Primary />);
+    setSelection(
+      'p',
+      {
+        query: 'My',
+        offset: 1,
+      },
+      {
+        query: 'Amir',
+        offset: 10,
+      }
+    )
+      .get('.amidetor__formatable-menu')
+      .should('be.visible');
+  });
+
+  it('should display recived formatters in the menu', () => {
+    mount(<Stories.WithFormatters />);
+    setSelection(
+      'p',
+      {
+        query: 'My',
+        offset: 1,
+      },
+      {
+        query: 'Amir',
+        offset: 10,
+      }
+    )
+      .get('#formatter-1')
+      .should('be.visible')
+      .get('#formatter-2')
+      .should('be.visible');
+  });
+
+  it('should display formatters placeholder if formatters array is empty', () => {
+    mount(<Stories.Primary />);
+    selectSomething()
+      .get('.amidetor__formatable-menu')
+      .contains('No Formatter Found');
   });
 });
 
-describe('get node index function', () => {
+describe('getNodeIndex Function', () => {
   it('should give the right index', () => {
-    const { getByText } = render(
+    mount(
       <div>
-        <span>amir</span>
-        <span>Mohseni</span>
-        <span>Moghadam</span>
+        <span id="0">amir</span>
+        <span id="1">Mohseni</span>
+        <span id="2">Moghadam</span>
         <p>
-          <span>Another</span>
-          <span>test</span>
+          <span id="3">Another</span>
+          <span id="4">test</span>
         </p>
       </div>
     );
 
-    expect(getNodeIndex(getByText(/amir/))).toBe(0);
-    expect(getNodeIndex(getByText(/Mohseni/))).toBe(1);
-    expect(getNodeIndex(getByText(/test/))).toBe(1);
+    cy.get('#0').then(($el) => {
+      expect(getNodeIndex($el[0])).to.equal(0);
+    });
+
+    cy.get('#1').then(($el) => {
+      expect(getNodeIndex($el[0])).to.equal(1);
+    });
+
+    cy.get('#4').then(($el) => {
+      expect(getNodeIndex($el[0])).to.equal(1);
+    });
   });
 });

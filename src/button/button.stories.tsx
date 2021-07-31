@@ -1,7 +1,7 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import Button from './button.component';
-import { ButtonProps } from './button.types';
 
 export default {
   title: 'Button',
@@ -23,10 +23,18 @@ const SampleIcon = () => (
   </svg>
 );
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+interface PriamryProps {
+  customOnClick?: () => any;
+}
 
-export const Primary = Template.bind({});
-Primary.args = { Icon: SampleIcon, label: 'test' };
+export const Primary = ({ customOnClick }: PriamryProps) => (
+  <Button
+    Icon={SampleIcon}
+    label="test"
+    onClick={customOnClick || action('onClick')}
+  />
+);
 
-export const Active = Template.bind({});
-Active.args = { Icon: SampleIcon, label: 'test', active: true };
+export const Active = () => (
+  <Button Icon={SampleIcon} label="test" onClick={action('onClick')} active />
+);

@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
+import { mount } from '@cypress/react';
+import * as Stories from './paragraph.stories';
 import Paragraph, { getData, getHTML } from './paragraph.component';
-import { ParagraphProps, Data } from './paragraph.types';
+import { Data, ParagraphProps } from './paragraph.types';
 
 describe('Paragraph Component', () => {
   let props: ParagraphProps;
@@ -27,143 +26,200 @@ describe('Paragraph Component', () => {
           },
         ],
       },
-      onChange: () => {},
+      onChange: (data) => console.log(data),
     };
   });
 
   it('should display the text content correctly', () => {
-    const { getByText } = render(<Paragraph {...props} />);
-    const el = getByText(/Hello/, {
-      exact: false,
-    });
-    expect(el).toBeInTheDocument();
+    mount(<Stories.Primary />);
+    cy.contains('Hello, This is a');
+  });
+
+  it('should have the right classNames with provided className', () => {
+    const className = 'test-class-name';
+    mount(<Paragraph {...props} className={className} />);
+    cy.get(`.${className}`);
   });
 
   it('should have the right classNames with no provided className', () => {
-    const { getByText } = render(<Paragraph {...props} />);
-    const el = getByText(/Hello/, { exact: true }).parentNode;
-    expect(el).toHaveClass('amidetor__paragraph');
+    mount(<Stories.Primary />);
+    cy.get('.amidetor__paragraph');
   });
 
-  it('should have the right classNames provided a className', () => {
-    const { getByText } = render(
-      <Paragraph {...props} className="test_class" />
-    );
-    const el = getByText(/Hello/, { exact: true }).parentNode;
-    expect(el).toHaveClass('test_class', 'amidetor__paragraph');
-  });
-
-  it('should apply text direction setting correctly', () => {
-    const { getByText } = render(<Paragraph {...props} />);
-    const pElement = getByText(/Hello/, { exact: false }).parentElement;
-    expect(pElement?.style.direction).toBe('');
-
-    cleanup();
+  it('should apply the rtl text direction setting correctly', () => {
     props.value.direction = 'rtl';
-    const { getByText: getByText2 } = render(<Paragraph {...props} />);
-    const pElement2 = getByText2(/Hello/, { exact: false }).parentElement;
-    expect(pElement2?.style.direction).toBe('rtl');
-
-    cleanup();
-    props.value.direction = 'ltr';
-    const { getByText: getByText3 } = render(<Paragraph {...props} />);
-    const pElement3 = getByText3(/Hello/, { exact: false }).parentElement;
-    expect(pElement3?.style.direction).toBe('ltr');
+    mount(<Paragraph {...props} />);
+    cy.get('p').should('have.css', 'direction', 'rtl');
   });
 
-  it('should apply text align setting correctly', () => {
-    const { getByText } = render(<Paragraph {...props} />);
-    const pElement = getByText(/Hello/, { exact: false }).parentElement;
-    expect(pElement?.style.textAlign).toBe('');
-
-    cleanup();
-    props.value.textAlign = 'left';
-    const { getByText: getByText2 } = render(<Paragraph {...props} />);
-    const pElement2 = getByText2(/Hello/, { exact: false }).parentElement;
-    expect(pElement2?.style.textAlign).toBe('left');
-
-    cleanup();
-    props.value.textAlign = 'center';
-    const { getByText: getByText3 } = render(<Paragraph {...props} />);
-    const pElement3 = getByText3(/Hello/, { exact: false }).parentElement;
-    expect(pElement3?.style.textAlign).toBe('center');
-
-    cleanup();
-    props.value.textAlign = 'right';
-    const { getByText: getByText4 } = render(<Paragraph {...props} />);
-    const pElement4 = getByText4(/Hello/, { exact: false }).parentElement;
-    expect(pElement4?.style.textAlign).toBe('right');
-  });
-
-  it('should call onChange function with applied settings', () => {
-    const onChangeFunc = jest.fn();
-    const { getByRole } = render(
-      <Paragraph {...props} onChange={onChangeFunc} />
+  it('should change the rtl button class correctly', () => {
+    props.value.direction = 'rtl';
+    mount(<Paragraph {...props} />);
+    cy.get('[aria-label="right to left text direction"]').should(
+      'have.class',
+      'amidetor__button--active'
     );
-    const LtrBtn = getByRole('button', {
-      name: 'left to right text direction',
-    });
-    const RtlBtn = getByRole('button', {
-      name: 'right to left text direction',
-    });
-    const TxtAlignLeft = getByRole('button', {
-      name: 'left text align',
-    });
-    const TxtAlignCenter = getByRole('button', {
-      name: 'center text align',
-    });
-    const TxtAlignRight = getByRole('button', {
-      name: 'right text align',
-    });
+  });
 
-    userEvent.click(LtrBtn);
-    let expectedObj: Data = {
+  it('should apply the ltr text direction setting correctly', () => {
+    props.value.direction = 'ltr';
+    mount(<Paragraph {...props} />);
+    cy.get('p').should('have.css', 'direction', 'ltr');
+  });
+
+  it('should change the ltr button class correctly', () => {
+    props.value.direction = 'ltr';
+    mount(<Paragraph {...props} />);
+    cy.get('[aria-label="left to right text direction"]').should(
+      'have.class',
+      'amidetor__button--active'
+    );
+  });
+
+  it('should apply the right text align setting correctly', () => {
+    props.value.textAlign = 'right';
+    mount(<Paragraph {...props} />);
+    cy.get('p').should('have.css', 'text-align', 'right');
+  });
+
+  it("should change the right text align button's class correctly", () => {
+    props.value.textAlign = 'right';
+    mount(<Paragraph {...props} />);
+    cy.get('[aria-label="right text align"]').should(
+      'have.class',
+      'amidetor__button--active'
+    );
+  });
+
+  it('should apply the left text align setting correctly', () => {
+    props.value.textAlign = 'left';
+    mount(<Paragraph {...props} />);
+    cy.get('p').should('have.css', 'text-align', 'left');
+  });
+
+  it("should change the left align button's class correctly", () => {
+    props.value.textAlign = 'left';
+    mount(<Paragraph {...props} />);
+    cy.get('[aria-label="left text align"]').should(
+      'have.class',
+      'amidetor__button--active'
+    );
+  });
+
+  it('should apply the center text align setting correctly', () => {
+    props.value.textAlign = 'center';
+    mount(<Paragraph {...props} />);
+    cy.get('p').should('have.css', 'text-align', 'center');
+  });
+
+  it("should change the center align button's class correctly", () => {
+    props.value.textAlign = 'center';
+    mount(<Paragraph {...props} />);
+    cy.get('[aria-label="center text align"]').should(
+      'have.class',
+      'amidetor__button--active'
+    );
+  });
+
+  it('should call the onChange correctly when clicking on the text align settings', () => {
+    const stub1 = cy.stub();
+    mount(<Paragraph {...props} onChange={stub1} />);
+    // Text align center
+    cy.get('[aria-label="center text align"]')
+      .click()
+      .then(() => {
+        expect(stub1).to.be.calledOnceWith({
+          ...props.value,
+          textAlign: 'center',
+        } as Data);
+      });
+    // Text align left
+    const stub2 = cy.stub();
+    mount(<Paragraph {...props} onChange={stub2} />);
+    cy.get('[aria-label="left text align"]')
+      .click()
+      .then(() => {
+        expect(stub2).to.be.calledWith({
+          ...props.value,
+          textAlign: 'left',
+        } as Data);
+      });
+    // Text align right
+    const stub3 = cy.stub();
+    mount(<Paragraph {...props} onChange={stub3} />);
+    cy.get('[aria-label="right text align"]')
+      .click()
+      .then(() => {
+        expect(stub3).to.be.calledWith({
+          ...props.value,
+          textAlign: 'right',
+        } as Data);
+      });
+  });
+
+  it('should call the onChange correctly when clicking on the text direction settings', () => {
+    const stub1 = cy.stub();
+    mount(<Paragraph {...props} onChange={stub1} />);
+    // ltr
+    cy.get('[aria-label="left to right text direction"]')
+      .click()
+      .then(() => {
+        expect(stub1).to.be.calledOnceWith({
+          ...props.value,
+          direction: 'ltr',
+        } as Data);
+      });
+    // rtl
+    const stub2 = cy.stub();
+    mount(<Paragraph {...props} onChange={stub2} />);
+    cy.get('[aria-label="right to left text direction"]')
+      .click()
+      .then(() => {
+        expect(stub2).to.be.calledWith({
+          ...props.value,
+          direction: 'rtl',
+        } as Data);
+      });
+  });
+
+  it('should call the onChange correctly in combinational settings scenario', () => {
+    const value: Data = {
       type: 'paragraph',
-      children: props.value.children,
-      direction: 'ltr',
+      children: [],
+      textAlign: 'center',
     };
-    expect(onChangeFunc).lastCalledWith(expectedObj);
-
-    userEvent.click(RtlBtn);
-    expectedObj.direction = 'rtl';
-    expect(onChangeFunc).lastCalledWith(expectedObj);
-
-    expectedObj = {
-      type: 'paragraph',
-      children: props.value.children,
-    };
-    userEvent.click(TxtAlignLeft);
-    expectedObj.textAlign = 'left';
-    expect(onChangeFunc).lastCalledWith(expectedObj);
-
-    userEvent.click(TxtAlignCenter);
-    expectedObj.textAlign = 'center';
-    expect(onChangeFunc).lastCalledWith(expectedObj);
-
-    userEvent.click(TxtAlignRight);
-    expectedObj.textAlign = 'right';
-    expect(onChangeFunc).lastCalledWith(expectedObj);
+    const stub1 = cy.stub();
+    mount(<Paragraph {...props} value={value} onChange={stub1} />);
+    cy.get('[aria-label="left to right text direction"]')
+      .click()
+      .then(() => {
+        expect(stub1).to.be.calledOnceWith({
+          ...value,
+          direction: 'ltr',
+        } as Data);
+      });
   });
 });
 
 describe('getData Function', () => {
   it('should get correct data from simple spans', () => {
-    const { getByTestId } = render(
+    mount(
       <p data-testid="p">
         <span>Hello </span>
         <span> World!</span>
       </p>
     );
-    const el = getByTestId('p');
-    const data = getData(el as HTMLParagraphElement);
-    expect(data.children.length).toBe(2);
-    expect(data.children[0].text).toBe('Hello ');
-    expect(data.children[1].text).toBe(' World!');
+    cy.get('p').then(($el) => {
+      const data = getData($el[0]);
+      expect(data.children.length).to.equal(2);
+      expect(data.children[0].text).to.equal('Hello ');
+      expect(data.children[1].text).to.equal(' World!');
+    });
   });
 });
 
 describe('getHTML Function', () => {
-  it('should get correct HTML from simple spans', () => {
+  it('should get correct HTML from the given object', () => {
     const sampleData: Data = {
       type: 'paragraph',
       children: [
@@ -180,7 +236,7 @@ describe('getHTML Function', () => {
     };
     const html = getHTML(sampleData);
     const expected = '<span>My </span><span> name is A</span><span>mir</span>';
-    expect(html).toBe(expected);
+    expect(html).to.equal(expected);
   });
 
   it('should escape html tags properly', () => {
@@ -198,6 +254,6 @@ describe('getHTML Function', () => {
     const html = getHTML(sampleData);
     const expected =
       '<span>M&quot;y </span><span> n&amp;ame i&#39;s &lt;bold&gt;Amir&lt;/bold&gt;</span>';
-    expect(html).toBe(expected);
+    expect(html).to.equal(expected);
   });
 });
