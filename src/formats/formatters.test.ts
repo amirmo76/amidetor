@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { updateBlock } from './formatters.utils';
+import { updateBlock, refactorChildren } from './formatters.utils';
 import { Block } from '../blocks/blocks.types';
 import { SelectionInfo } from './formatters.types';
 
@@ -256,5 +256,72 @@ describe('updateBlock Function', () => {
       let updatedBlock = updateBlock(initBlock, selection, 'bold', true);
       expect(updatedBlock).to.deep.equal(expectedBlock);
     });
+  });
+});
+
+describe('refactorChildren Function', () => {
+  it("should refactor given block's children", () => {
+    const initBlock: Block = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Some text',
+          bold: true,
+        },
+        {
+          text: ' Amir',
+          bold: true,
+        },
+        {
+          text: '!',
+          bold: true,
+          italic: true,
+        },
+      ],
+    };
+
+    const expectedBlock: Block = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Some text Amir',
+          bold: true,
+        },
+        {
+          text: '!',
+          bold: true,
+          italic: true,
+        },
+      ],
+    };
+
+    const updatedBlock = refactorChildren(initBlock);
+    console.log(updatedBlock);
+    expect(updatedBlock).to.deep.equal(expectedBlock);
+  });
+
+  it('should return the same given block when no equal is found', () => {
+    const initBlock: Block = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Some text',
+          bold: true,
+        },
+        {
+          text: ' Amir',
+        },
+        {
+          text: '!',
+          bold: true,
+          italic: true,
+        },
+      ],
+    };
+
+    const expectedBlock = initBlock;
+
+    const updatedBlock = refactorChildren(initBlock);
+    expect(updatedBlock).to.deep.equal(expectedBlock);
   });
 });

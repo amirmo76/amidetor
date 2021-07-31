@@ -96,3 +96,37 @@ export function updateBlock(
 
   return newBlock;
 }
+
+export function refactorChildren(block: Block): Block {
+  try {
+    const newBlock: Block = {
+      ...block,
+      children: [],
+    };
+
+    block.children.forEach((cur, i) => {
+      if (i === 0) newBlock.children.push(cur);
+      else {
+        const comparableOne = {
+          ...newBlock.children[newBlock.children.length - 1],
+        };
+        comparableOne.text = undefined;
+        const comparableTwo = { ...cur };
+        comparableTwo.text = undefined;
+        if (JSON.stringify(comparableOne) === JSON.stringify(comparableTwo)) {
+          const prev = newBlock.children.pop();
+          if (prev && prev.text !== undefined && cur.text !== undefined) {
+            const newPushable: Child = { ...prev, text: prev.text + cur.text };
+            newBlock.children.push(newPushable);
+          }
+        } else {
+          newBlock.children.push(cur);
+        }
+      }
+    });
+
+    return newBlock;
+  } catch {
+    return block;
+  }
+}
