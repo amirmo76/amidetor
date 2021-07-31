@@ -8,3 +8,10 @@ export interface FormatterProps {
 export interface Formatter {
   Component(props: FormatterProps): JSX.Element;
 }
+
+export type SelectionInfo = {
+  endIndex: number;
+  endOffset: number;
+  startIndex: number;
+  startOffset: number;
+};

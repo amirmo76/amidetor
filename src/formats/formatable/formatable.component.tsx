@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-  MenuPosition,
-  SelectionInfo,
-  FormatableProps,
-} from './formatable.types';
+import { MenuPosition, FormatableProps } from './formatable.types';
+import { SelectionInfo } from '../formatters.types';
 import './formatable.styles.scss';
 
 /**
@@ -39,6 +36,7 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
   );
 
   useEffect(() => {
+    console.log(selectionInfo);
     if (selectionInfo) setShowMenu(true);
     const selection = window.getSelection();
     if (!selection) return;
