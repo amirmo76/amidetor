@@ -42,6 +42,8 @@ export function updateBlock(
     [key]: value,
   };
 
+  if (startSecondHalf[key] === undefined) delete startSecondHalf[key];
+
   if (startSecondHalf.text?.length) newBlock.children.push(startSecondHalf);
 
   // add the parts between the start and end indexes
@@ -50,10 +52,14 @@ export function updateBlock(
       .filter(
         (_, i) => i > selectionInfo.startIndex && i < selectionInfo.endIndex
       )
-      .map((cur) => ({
-        ...cur,
-        [key]: value,
-      }))
+      .map((cur) => {
+        const returnVlaue = {
+          ...cur,
+          [key]: value,
+        };
+        if (value === undefined) delete returnVlaue[key];
+        return returnVlaue;
+      })
   );
 
   // split the end index
@@ -73,6 +79,8 @@ export function updateBlock(
     [key]: value,
   };
 
+  if (endFirstHalf[key] === undefined) delete endFirstHalf[key];
+
   if (endFirstHalf.text?.length) newBlock.children.push(endFirstHalf);
 
   const endSecondHalf: Child = {
@@ -84,9 +92,10 @@ export function updateBlock(
     ),
   };
 
-  if (selectionInfo.startIndex === selectionInfo.endIndex)
-    delete endSecondHalf[key];
-
+  if (selectionInfo.startIndex === selectionInfo.endIndex) {
+    endSecondHalf[key] = block.children[selectionInfo.endIndex][key];
+    if (endSecondHalf[key] === undefined) delete endSecondHalf[key];
+  }
   if (endSecondHalf.text?.length) newBlock.children.push(endSecondHalf);
 
   // add the parts after the end indexes
