@@ -126,6 +126,7 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
                   key={i}
                   value={value}
                   onChange={onChange}
+                  selectionInfo={selectionInfo}
                 />
               ))
             ) : (
