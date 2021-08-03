@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Button from '../../../button';
 import Icon from './bold.icon';
 import { FormatterProps } from '../../formatters.types';
