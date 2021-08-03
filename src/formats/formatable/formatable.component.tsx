@@ -105,10 +105,12 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
 
   return (
     <div>
-      <span
-        className="amidetor__formatable-off-menu"
-        onClick={() => setShowMenu(false)}
-      />
+      {showMenu && (
+        <span
+          className="amidetor__formatable-off-menu"
+          onClick={() => setShowMenu(false)}
+        />
+      )}
       <div className="amidetor__formatable" ref={ref}>
         <div onMouseUp={checkForSelection}>{children}</div>
         {showMenu && (
