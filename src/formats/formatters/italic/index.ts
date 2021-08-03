@@ -1,7 +1,9 @@
 import Italic, { KEY } from './italic.component';
 import { Formatter } from '../../formatters.types';
 
-export default {
+const formatter: Formatter = {
   Component: Italic,
   KEY,
-} as Formatter;
+};
+
+export default formatter;

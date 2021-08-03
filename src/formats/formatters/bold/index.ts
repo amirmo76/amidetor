@@ -1,7 +1,9 @@
 import Bold, { KEY } from './bold.component';
 import { Formatter } from '../../formatters.types';
 
-export default {
+const formatter: Formatter = {
   Component: Bold,
   KEY,
-} as Formatter;
+};
+
+export default formatter;

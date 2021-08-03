@@ -1,7 +1,9 @@
 import Underline, { KEY } from './underline.component';
 import { Formatter } from '../../formatters.types';
 
-export default {
+const formatter: Formatter = {
   Component: Underline,
   KEY,
-} as Formatter;
+};
+
+export default formatter;
