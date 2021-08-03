@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Block, Child } from '../blocks/blocks.types';
 import { SelectionInfo } from './formatters.types';
 
@@ -138,4 +139,23 @@ export function refactorChildren(block: Block): Block {
   } catch {
     return block;
   }
+}
+
+export function useTestFormat(
+  value: Block,
+  test: (val: Child) => boolean,
+  selectionInfo: SelectionInfo
+): boolean {
+  const isActive = useMemo(() => {
+    if (!selectionInfo) return false;
+    const inBetweenParts = value.children.filter(
+      (_, i) => i >= selectionInfo.startIndex && i <= selectionInfo.endIndex
+    );
+    const hasTheFormatCount = inBetweenParts.reduce(
+      (sum, cur) => (test(cur) ? sum + 1 : sum),
+      0
+    );
+    return inBetweenParts.length === hasTheFormatCount ? true : false;
+  }, [value, selectionInfo, test]);
+  return isActive;
 }

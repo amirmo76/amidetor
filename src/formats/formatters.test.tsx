@@ -1,8 +1,14 @@
 /// <reference types="cypress" />
 
-import { updateBlock, refactorChildren } from './formatters.utils';
+import { mount } from '@cypress/react';
+import {
+  updateBlock,
+  refactorChildren,
+  useTestFormat,
+} from './formatters.utils';
 import { Block } from '../blocks/blocks.types';
 import { SelectionInfo } from './formatters.types';
+import React from 'react';
 
 describe('updateBlock Function', () => {
   let initBlock: Block;
@@ -323,5 +329,47 @@ describe('refactorChildren Function', () => {
 
     const updatedBlock = refactorChildren(initBlock);
     expect(updatedBlock).to.deep.equal(expectedBlock);
+  });
+});
+
+describe('testFormat Hook', () => {
+  it('should detect active format correctly', () => {
+    const block: Block = {
+      type: 'test',
+      children: [
+        {
+          text: 'some text',
+        },
+        {
+          text: 'hello',
+          someKey: true,
+        },
+        {
+          text: 'my name',
+          someKey: true,
+        },
+        {
+          text: 'is Amir!',
+          someKey: true,
+        },
+      ],
+    };
+    const selectionInfo: SelectionInfo = {
+      startIndex: 1,
+      endIndex: 3,
+      startOffset: 2,
+      endOffset: 3,
+    };
+    function TestComponent() {
+      const active = useTestFormat(
+        block,
+        (val) => !!val['someKey'],
+        selectionInfo
+      );
+
+      return active ? <p>yes</p> : <p>no</p>;
+    }
+    mount(<TestComponent />);
+    cy.contains('yes');
   });
 });
