@@ -372,4 +372,28 @@ describe('testFormat Hook', () => {
     mount(<TestComponent />);
     cy.contains('yes');
   });
+
+  it('should not detect active on empty children', () => {
+    const block: Block = {
+      type: 'test',
+      children: [],
+    };
+    const selectionInfo: SelectionInfo = {
+      startIndex: 1,
+      endIndex: 3,
+      startOffset: 2,
+      endOffset: 3,
+    };
+    function TestComponent() {
+      const active = useTestFormat(
+        block,
+        (val) => !!val['someKey'],
+        selectionInfo
+      );
+
+      return active ? <p>yes</p> : <p>no</p>;
+    }
+    mount(<TestComponent />);
+    cy.contains('no');
+  });
 });

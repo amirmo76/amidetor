@@ -148,6 +148,7 @@ export function useTestFormat(
 ): boolean {
   const isActive = useMemo(() => {
     if (!selectionInfo) return false;
+    if (value.children.length === 0) return false;
     const inBetweenParts = value.children.filter(
       (_, i) => i >= selectionInfo.startIndex && i <= selectionInfo.endIndex
     );
