@@ -144,7 +144,7 @@ export function refactorChildren(block: Block): Block {
 export function useTestFormat(
   value: Block,
   test: (val: Child) => boolean,
-  selectionInfo: SelectionInfo
+  selectionInfo?: SelectionInfo | null
 ): boolean {
   const isActive = useMemo(() => {
     if (!selectionInfo) return false;
