@@ -337,6 +337,38 @@ describe('Paragraph Component', () => {
       'underline'
     );
   });
+
+  it('should call the onChange on blur with the correct formats', () => {
+    const pBlock: Data = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Hello',
+          bold: true,
+        },
+      ],
+    };
+    const callback = cy.stub();
+    mount(<Paragraph value={pBlock} onChange={callback} />);
+    cy.get('p')
+      .then(($el) => {
+        const p = $el[0];
+        p.click();
+        p.focus();
+        p.blur();
+      })
+      .then(() => {
+        expect(callback).to.be.calledWith({
+          ...pBlock,
+          children: [
+            {
+              text: 'Hello',
+              bold: true,
+            },
+          ],
+        } as Data);
+      });
+  });
 });
 
 describe('getData Function', () => {
@@ -352,6 +384,34 @@ describe('getData Function', () => {
       expect(data.children.length).to.equal(2);
       expect(data.children[0].text).to.equal('Hello ');
       expect(data.children[1].text).to.equal(' World!');
+    });
+  });
+
+  it('should get preserve child node formats', () => {
+    const block: Data = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Hello ',
+          bold: true,
+        },
+        {
+          text: ' World!',
+        },
+      ],
+    };
+    mount(
+      <p data-testid="p">
+        <span>Hello </span>
+        <span> World!</span>
+      </p>
+    );
+    cy.get('p').then(($el) => {
+      const data = getData($el[0], block);
+      expect(data.children.length).to.equal(2);
+      expect(data.children[0].text).to.equal('Hello ');
+      expect(data.children[1].text).to.equal(' World!');
+      expect(data.children[0].bold).to.be.true;
     });
   });
 });

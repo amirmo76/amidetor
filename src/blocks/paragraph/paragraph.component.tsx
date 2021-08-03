@@ -22,10 +22,11 @@ import './paragraph.styles.scss';
 
 export const TYPE = 'paragraph';
 
-export function getData(pNode: HTMLParagraphElement): Data {
+export function getData(pNode: HTMLParagraphElement, block?: Data): Data {
   const newData: Data = {
     type: 'paragraph',
-    children: Array.from(pNode.childNodes).map((node) => ({
+    children: Array.from(pNode.childNodes).map((node, i) => ({
+      ...block?.children[i],
       text: node.textContent || '',
     })),
   };
@@ -64,7 +65,7 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
     if (e.key === 'Enter') e.preventDefault();
     if (e.key === 'Escape') {
       setEditable(false);
-      if (ref.current) onChange({ ...value, ...getData(ref.current) });
+      if (ref.current) onChange({ ...value, ...getData(ref.current, value) });
     }
   };
 
@@ -132,7 +133,8 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
           dangerouslySetInnerHTML: { __html: getHTML(value) },
           style: styles,
           onBlur: () =>
-            ref.current && onChange({ ...value, ...getData(ref.current) }),
+            ref.current &&
+            onChange({ ...value, ...getData(ref.current, value) }),
         })}
       </Formatable>
     </div>
