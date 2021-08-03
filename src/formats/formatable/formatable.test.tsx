@@ -54,9 +54,11 @@ describe('Formatable Component', () => {
         offset: 10,
       }
     )
-      .get('#formatter-1')
+      .get('[aria-label="format bold"]')
       .should('be.visible')
-      .get('#formatter-2')
+      .get('[aria-label="format italic"]')
+      .should('be.visible')
+      .get('[aria-label="format underline"]')
       .should('be.visible');
   });
 

@@ -49,8 +49,12 @@ const formatters: Formatter[] = [
     KEY: Bold.KEY,
   },
   {
-    Component: () => <p id="formatter-2">Formatter-2</p>,
-    KEY: 'some key',
+    Component: Italic.Component,
+    KEY: Italic.KEY,
+  },
+  {
+    Component: Underline.Component,
+    KEY: Underline.KEY,
   },
 ];
 
