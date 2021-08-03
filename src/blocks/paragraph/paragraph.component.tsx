@@ -1,6 +1,10 @@
 import React, { KeyboardEvent, useState, useRef } from 'react';
 import CSS from 'csstype';
 import Button from '../../button';
+import Formatable from '../../formats/formatable';
+import Bold from '../../formats/formatters/bold';
+import Italic from '../../formats/formatters/italic';
+import Underline from '../../formats/formatters/underline';
 import {
   ParagraphProps,
   Data,
@@ -105,18 +109,24 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
           active={value.direction === 'rtl'}
         />
       </div>
-      {React.createElement('p', {
-        ref: ref,
-        contentEditable: editable,
-        suppressContentEditableWarning: true,
-        onKeyDown: keyHandle,
-        className: `${className ? className + ' ' : ''}amidetor__paragraph`,
-        onClick: () => setEditable(true),
-        dangerouslySetInnerHTML: { __html: getHTML(value) },
-        style: styles,
-        onBlur: () =>
-          ref.current && onChange({ ...value, ...getData(ref.current) }),
-      })}
+      <Formatable
+        value={value}
+        onChange={onChange}
+        formatters={[Bold, Italic, Underline]}
+      >
+        {React.createElement('p', {
+          ref: ref,
+          contentEditable: editable,
+          suppressContentEditableWarning: true,
+          onKeyDown: keyHandle,
+          className: `${className ? className + ' ' : ''}amidetor__paragraph`,
+          onClick: () => setEditable(true),
+          dangerouslySetInnerHTML: { __html: getHTML(value) },
+          style: styles,
+          onBlur: () =>
+            ref.current && onChange({ ...value, ...getData(ref.current) }),
+        })}
+      </Formatable>
     </div>
   );
 }

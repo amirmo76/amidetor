@@ -4,6 +4,7 @@ import * as Stories from './paragraph.stories';
 import Paragraph, { getData, getHTML } from './paragraph.component';
 import { Data, ParagraphProps } from './paragraph.types';
 import { Block } from '../blocks.types';
+import { setSelection } from '../../helpers';
 
 describe('Paragraph Component', () => {
   let props: ParagraphProps;
@@ -197,6 +198,87 @@ describe('Paragraph Component', () => {
         expect(stub1).to.be.calledOnceWith({
           ...value,
           direction: 'ltr',
+        } as Data);
+      });
+  });
+
+  it('should apply bold, italic and underline formats correctly', () => {
+    const block: Data = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Hello there, My name is amir',
+        },
+      ],
+    };
+    const callback = cy.stub();
+    mount(<Paragraph value={block} onChange={callback} />);
+    setSelection(
+      'p',
+      {
+        query: 'My',
+        offset: 13,
+      },
+      {
+        query: 'My',
+        offset: 15,
+      }
+    )
+      .get('[aria-label="format bold"]')
+      .click()
+      .then(() => {
+        expect(callback).to.be.calledWith({
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Hello there, ',
+            },
+            {
+              text: 'My',
+              bold: true,
+            },
+            {
+              text: ' name is amir',
+            },
+          ],
+        } as Data);
+      })
+      .get('[aria-label="format italic"]')
+      .click()
+      .then(() => {
+        expect(callback).to.be.calledWith({
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Hello there, ',
+            },
+            {
+              text: 'My',
+              italic: true,
+            },
+            {
+              text: ' name is amir',
+            },
+          ],
+        } as Data);
+      })
+      .get('[aria-label="format underline"]')
+      .click()
+      .then(() => {
+        expect(callback).to.be.calledWith({
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Hello there, ',
+            },
+            {
+              text: 'My',
+              underline: true,
+            },
+            {
+              text: ' name is amir',
+            },
+          ],
         } as Data);
       });
   });
