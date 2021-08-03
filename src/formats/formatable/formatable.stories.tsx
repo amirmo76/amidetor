@@ -2,6 +2,9 @@ import React from 'react';
 import Formatable from './formatable.component';
 import { Formatter } from '../formatters.types';
 import { Meta } from '@storybook/react';
+import Bold from '../formatters/bold';
+import Italic from '../formatters/italic';
+import Underline from '../formatters/underline';
 
 export default {
   title: 'Formats/Formatable',
@@ -42,8 +45,8 @@ export const Primary = () => (
 
 const formatters: Formatter[] = [
   {
-    Component: () => <p id="formatter-1">Formatter-1</p>,
-    KEY: 'some key',
+    Component: Bold.Component,
+    KEY: Bold.KEY,
   },
   {
     Component: () => <p id="formatter-2">Formatter-2</p>,
