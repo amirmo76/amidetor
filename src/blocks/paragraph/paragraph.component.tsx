@@ -22,11 +22,11 @@ import './paragraph.styles.scss';
 
 export const TYPE = 'paragraph';
 
-export function getData(pNode: HTMLParagraphElement, block?: Data): Data {
+export function getData(pNode: HTMLParagraphElement, block: Data): Data {
   const newData: Data = {
     type: 'paragraph',
     children: Array.from(pNode.childNodes).map((node, i) => ({
-      ...block?.children[i],
+      ...block.children[i],
       text: node.textContent || '',
     })),
   };
@@ -73,7 +73,7 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
     if (!ref.current) return;
     const newData: Data = {
       ...value,
-      ...getData(ref.current),
+      ...getData(ref.current, value),
       [key]: val,
     };
     onChange(newData);

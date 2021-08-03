@@ -373,21 +373,6 @@ describe('Paragraph Component', () => {
 
 describe('getData Function', () => {
   it('should get correct data from simple spans', () => {
-    mount(
-      <p data-testid="p">
-        <span>Hello </span>
-        <span> World!</span>
-      </p>
-    );
-    cy.get('p').then(($el) => {
-      const data = getData($el[0]);
-      expect(data.children.length).to.equal(2);
-      expect(data.children[0].text).to.equal('Hello ');
-      expect(data.children[1].text).to.equal(' World!');
-    });
-  });
-
-  it('should get preserve child node formats', () => {
     const block: Data = {
       type: 'paragraph',
       children: [
