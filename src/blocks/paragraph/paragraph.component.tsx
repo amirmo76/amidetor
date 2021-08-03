@@ -42,8 +42,16 @@ export function escape(str: string): string {
 
 export function getHTML(data: Data): string {
   let html = '';
+
   data.children.map((node) => {
-    if (node.text) html += `<span>${escape(node.text)}</span>`;
+    let styles: string = '';
+    if (node.bold) styles += 'font-weight: 700;';
+    if (node.italic) styles += 'font-style: italic;';
+    if (node.underline) styles += 'text-decoration: underline;';
+    if (node.text)
+      html += `<span${styles ? ` style="${styles}"` : ''}>${escape(
+        node.text
+      )}</span>`;
   });
   return html;
 }

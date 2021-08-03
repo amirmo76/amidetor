@@ -2,6 +2,9 @@ import { OnChangeFunction } from '../../editor/editor.types';
 
 export type Child = {
   text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
 };
 
 export type Direction = 'rtl' | 'ltr';

@@ -282,6 +282,61 @@ describe('Paragraph Component', () => {
         } as Data);
       });
   });
+
+  it('should apply bold styles', () => {
+    const block: Data = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Hello ',
+        },
+        {
+          text: 'Amir',
+          bold: true,
+        },
+      ],
+    };
+    mount(<Paragraph value={block} onChange={() => {}} />);
+    cy.get('p span:nth-child(2)').should('have.css', 'font-weight', '700');
+  });
+
+  it('should apply italic styles', () => {
+    const block: Data = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Hello ',
+        },
+        {
+          text: 'Amir',
+          italic: true,
+        },
+      ],
+    };
+    mount(<Paragraph value={block} onChange={() => {}} />);
+    cy.get('p span:nth-child(2)').should('have.css', 'font-style', 'italic');
+  });
+
+  it('should apply underline styles', () => {
+    const block: Data = {
+      type: 'paragraph',
+      children: [
+        {
+          text: 'Hello ',
+        },
+        {
+          text: 'Amir',
+          underline: true,
+        },
+      ],
+    };
+    mount(<Paragraph value={block} onChange={() => {}} />);
+    cy.get('p span:nth-child(2)').should(
+      'have.css',
+      'text-decoration-line',
+      'underline'
+    );
+  });
 });
 
 describe('getData Function', () => {
