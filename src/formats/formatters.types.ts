@@ -1,4 +1,5 @@
 import { Block } from '../blocks/blocks.types';
+import { OnChangeFunction } from '../editor/editor.types';
 
 export type SelectionInfo = {
   endIndex: number;
@@ -9,7 +10,7 @@ export type SelectionInfo = {
 
 export interface FormatterProps {
   value: Block;
-  onChange(block: Block): any;
+  onChange: OnChangeFunction;
   selectionInfo?: SelectionInfo | null;
 }
 

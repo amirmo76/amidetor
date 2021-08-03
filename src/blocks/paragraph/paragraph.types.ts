@@ -1,3 +1,5 @@
+import { OnChangeFunction } from '../../editor/editor.types';
+
 export type Child = {
   text: string;
 };
@@ -13,13 +15,9 @@ export type Data = {
   textAlign?: TextAlign;
 };
 
-export interface onChangeFunc {
-  (data: Data): void;
-}
-
 export type ParagraphProps = {
   value: Data;
-  onChange: onChangeFunc;
+  onChange: OnChangeFunction;
   className?: string;
 };
 

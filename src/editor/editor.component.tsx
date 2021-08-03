@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { EditorProps, Block } from './editor.types';
+import { EditorProps } from './editor.types';
 import Paragraph, {
   Data as ParagraphData,
   TYPE as PARAGRAPH_TYPE,
@@ -8,6 +8,7 @@ import Paragraph, {
 import Button from '../button';
 import { PlusIcon, DeleteIcon } from './editor.icons';
 import './editor.styles.scss';
+import { Block } from '../blocks/blocks.types';
 
 const Editor = ({ defaultValue }: EditorProps) => {
   const [data, setData] = useState(defaultValue);

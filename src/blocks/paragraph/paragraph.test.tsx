@@ -3,6 +3,7 @@ import { mount } from '@cypress/react';
 import * as Stories from './paragraph.stories';
 import Paragraph, { getData, getHTML } from './paragraph.component';
 import { Data, ParagraphProps } from './paragraph.types';
+import { Block } from '../blocks.types';
 
 describe('Paragraph Component', () => {
   let props: ParagraphProps;
@@ -26,7 +27,7 @@ describe('Paragraph Component', () => {
           },
         ],
       },
-      onChange: (data) => console.log(data),
+      onChange: (data: Block) => console.log(data),
     };
   });
 
