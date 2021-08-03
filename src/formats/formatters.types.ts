@@ -15,4 +15,5 @@ export interface FormatterProps {
 
 export interface Formatter {
   Component(props: FormatterProps): JSX.Element;
+  KEY: string;
 }

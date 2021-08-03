@@ -43,9 +43,11 @@ export const Primary = () => (
 const formatters: Formatter[] = [
   {
     Component: () => <p id="formatter-1">Formatter-1</p>,
+    KEY: 'some key',
   },
   {
     Component: () => <p id="formatter-2">Formatter-2</p>,
+    KEY: 'some key',
   },
 ];
 
