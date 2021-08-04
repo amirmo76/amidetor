@@ -3,7 +3,6 @@ import { mount } from '@cypress/react';
 import * as Stories from './paragraph.stories';
 import Paragraph, { getData, getHTML } from './paragraph.component';
 import { ParagraphBlock, ParagraphProps } from './paragraph.types';
-import { Block } from '../blocks.types';
 import { setSelection } from '../../helpers';
 
 describe('Paragraph Component', () => {
