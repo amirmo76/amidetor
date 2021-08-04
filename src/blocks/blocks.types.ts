@@ -1,9 +1,10 @@
-export interface Child {
-  text?: string;
-  [key: string]: any;
+export interface Block<Type, Child> {
+  readonly type: Type;
+  children: Child[];
 }
 
-export interface Block {
-  readonly type: string;
-  children: Child[];
+export interface BlockProps<Type, Child> {
+  value: Block<Type, Child>;
+  onChange: (newData: Block<Type, Child>) => void;
+  className: string;
 }

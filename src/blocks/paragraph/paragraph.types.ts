@@ -1,6 +1,6 @@
-import { OnChangeFunction } from '../../editor/editor.types';
+import { Block, BlockProps } from '../blocks.types';
 
-export type Child = {
+export type ParagraphChild = {
   text: string;
   bold?: boolean;
   italic?: boolean;
@@ -11,18 +11,15 @@ export type Direction = 'rtl' | 'ltr';
 
 export type TextAlign = 'left' | 'center' | 'right';
 
-export type Data = {
-  readonly type: 'paragraph';
-  children: Child[];
+export interface ParagraphBlock extends Block<'paragraph', ParagraphChild> {
   direction?: Direction;
   textAlign?: TextAlign;
-};
+}
 
-export type ParagraphProps = {
-  value: Data;
-  onChange: OnChangeFunction;
-  className?: string;
-};
+export interface ParagraphProps
+  extends BlockProps<'paragraph', ParagraphChild> {
+  value: ParagraphBlock;
+}
 
 export type SettingKeys = 'direction' | 'textAlign';
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount } from '@cypress/react';
-import { Block } from '../../../blocks/blocks.types';
+import { FormatableBlock } from '../../formatters.types';
 import Bold from './bold.component';
 
 describe('Bold Formatter', () => {
-  let block: Block;
+  let block: FormatableBlock;
 
   beforeEach(() => {
     block = {
@@ -31,7 +31,7 @@ describe('Bold Formatter', () => {
   });
 
   it('should apply bold format on click and call the callback with it', () => {
-    const expectedBlock: Block = {
+    const expectedBlock: FormatableBlock = {
       ...block,
       children: [
         {
@@ -69,7 +69,7 @@ describe('Bold Formatter', () => {
 
   it('should get refactored on add', () => {
     block.children[2].bold = true;
-    const expectedBlock: Block = {
+    const expectedBlock: FormatableBlock = {
       ...block,
       children: [
         {
@@ -172,7 +172,7 @@ describe('Bold Formatter', () => {
               bold: true,
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 });

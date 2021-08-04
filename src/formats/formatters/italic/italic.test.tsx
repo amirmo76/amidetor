@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from '@cypress/react';
 import { FormatterProps, SelectionInfo } from '../../formatters.types';
 import Italic from './italic.component';
-import { Block } from '../../../blocks/blocks.types';
+import { FormatableBlock } from '../../formatters.types';
 
 describe('Italic Formatter', () => {
   let props: FormatterProps;
@@ -63,12 +63,12 @@ describe('Italic Formatter', () => {
               text: '.',
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 
   it('should apply with refactoring', () => {
-    const value: Block = {
+    const value: FormatableBlock = {
       type: 'some type',
       children: [
         {
@@ -104,7 +104,7 @@ describe('Italic Formatter', () => {
               text: ' you!',
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 
@@ -149,7 +149,7 @@ describe('Italic Formatter', () => {
               text: 'block.',
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 });

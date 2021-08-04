@@ -8,9 +8,16 @@ export type SelectionInfo = {
   startOffset: number;
 };
 
+export interface FormatableChild {
+  text: string;
+  [key: string]: any;
+}
+
+export type FormatableBlock = Block<any, FormatableChild>;
+
 export interface FormatterProps {
-  value: Block;
-  onChange: OnChangeFunction;
+  value: Block<any, FormatableChild>;
+  onChange: OnChangeFunction<any, FormatableChild>;
   selectionInfo?: SelectionInfo | null;
 }
 

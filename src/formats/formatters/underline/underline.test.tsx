@@ -1,7 +1,10 @@
 import React from 'react';
 import { mount } from '@cypress/react';
-import { FormatterProps, SelectionInfo } from '../../formatters.types';
-import { Block } from '../../../blocks/blocks.types';
+import {
+  FormatableBlock,
+  FormatterProps,
+  SelectionInfo,
+} from '../../formatters.types';
 import Underline from './underline.component';
 
 describe('Underline Component', () => {
@@ -65,7 +68,7 @@ describe('Underline Component', () => {
               text: ' the test',
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 
@@ -112,12 +115,12 @@ describe('Underline Component', () => {
               text: 'test third child',
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 
   it('should apply with refactoring', () => {
-    const block: Block = {
+    const block: FormatableBlock = {
       type: 'test',
       children: [
         {
@@ -158,7 +161,7 @@ describe('Underline Component', () => {
               underline: true,
             },
           ],
-        } as Block);
+        } as FormatableBlock);
       });
   });
 });

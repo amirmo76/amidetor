@@ -11,7 +11,7 @@ import { SelectionInfo } from './formatters.types';
 import React from 'react';
 
 describe('updateBlock Function', () => {
-  let initBlock: Block;
+  let initBlock: Block<'paragraph', any>;
 
   beforeEach(() => {
     initBlock = {
@@ -47,7 +47,7 @@ describe('updateBlock Function', () => {
         ],
       };
 
-      const expectedBlock: Block = {
+      const expectedBlock: Block<'paragraph', any> = {
         type: 'paragraph',
         children: [
           {
@@ -75,7 +75,7 @@ describe('updateBlock Function', () => {
     });
 
     it('should update block correctly when the block has multiple children', () => {
-      const expectedBlock: Block = {
+      const expectedBlock: Block<'paragraph', any> = {
         type: 'paragraph',
         children: [
           {
@@ -118,7 +118,7 @@ describe('updateBlock Function', () => {
       initBlock.children.push({
         text: '',
       });
-      const expectedBlock: Block = {
+      const expectedBlock: Block<'paragraph', any> = {
         type: 'paragraph',
         children: [
           {
@@ -154,7 +154,7 @@ describe('updateBlock Function', () => {
     });
 
     it('should handle entire node selection', () => {
-      const expectedBlock: Block = {
+      const expectedBlock: Block<'paragraph', any> = {
         type: 'paragraph',
         children: [
           {
@@ -221,7 +221,7 @@ describe('updateBlock Function', () => {
 
   describe('when selection is across nodes', () => {
     it('should update the block correctly', () => {
-      const expectedBlock: Block = {
+      const expectedBlock: Block<'paragraph', any> = {
         type: 'paragraph',
         children: [
           {
@@ -267,7 +267,7 @@ describe('updateBlock Function', () => {
 
 describe('refactorChildren Function', () => {
   it("should refactor given block's children", () => {
-    const initBlock: Block = {
+    const initBlock: Block<'paragraph', any> = {
       type: 'paragraph',
       children: [
         {
@@ -286,7 +286,7 @@ describe('refactorChildren Function', () => {
       ],
     };
 
-    const expectedBlock: Block = {
+    const expectedBlock: Block<'paragraph', any> = {
       type: 'paragraph',
       children: [
         {
@@ -307,7 +307,7 @@ describe('refactorChildren Function', () => {
   });
 
   it('should return the same given block when no equal is found', () => {
-    const initBlock: Block = {
+    const initBlock: Block<'paragraph', any> = {
       type: 'paragraph',
       children: [
         {
@@ -334,8 +334,8 @@ describe('refactorChildren Function', () => {
 
 describe('testFormat Hook', () => {
   it('should detect active format correctly', () => {
-    const block: Block = {
-      type: 'test',
+    const block: Block<'paragraph', any> = {
+      type: 'paragraph',
       children: [
         {
           text: 'some text',
@@ -374,8 +374,8 @@ describe('testFormat Hook', () => {
   });
 
   it('should not detect active on empty children', () => {
-    const block: Block = {
-      type: 'test',
+    const block: Block<'paragraph', any> = {
+      type: 'paragraph',
       children: [],
     };
     const selectionInfo: SelectionInfo = {

@@ -1,14 +1,17 @@
 import { useMemo } from 'react';
-import { Block, Child } from '../blocks/blocks.types';
-import { SelectionInfo } from './formatters.types';
+import {
+  SelectionInfo,
+  FormatableChild,
+  FormatableBlock,
+} from './formatters.types';
 
 export function updateBlock(
-  block: Block,
+  block: FormatableBlock,
   selectionInfo: SelectionInfo,
   key: string,
   value: any
-): Block {
-  const newBlock: Block = {
+): FormatableBlock {
+  const newBlock: FormatableBlock = {
     ...block,
     children: [],
   };
@@ -31,13 +34,13 @@ export function updateBlock(
   );
 
   // split the start index
-  const startFirstHalf: Child = {
+  const startFirstHalf: FormatableChild = {
     ...startBlock,
     text: startBlock.text.substring(0, selectionInfo.startOffset),
   };
   if (startFirstHalf.text?.length) newBlock.children.push(startFirstHalf);
 
-  const startSecondHalf: Child = {
+  const startSecondHalf: FormatableChild = {
     ...startBlock,
     text: startBlock.text.substring(selectionInfo.startOffset),
     [key]: value,
@@ -69,9 +72,10 @@ export function updateBlock(
       ? newBlock.children.pop()
       : endBlock;
 
-  const endFirstHalf: Child = {
+  if (!endBlock) return block;
+  const endFirstHalf: FormatableChild = {
     ...endBlock,
-    text: endBlock?.text?.substring(
+    text: endBlock.text.substring(
       0,
       selectionInfo.startIndex === selectionInfo.endIndex
         ? selectionInfo.endOffset - selectionInfo.startOffset
@@ -84,7 +88,7 @@ export function updateBlock(
 
   if (endFirstHalf.text?.length) newBlock.children.push(endFirstHalf);
 
-  const endSecondHalf: Child = {
+  const endSecondHalf: FormatableChild = {
     ...endBlock,
     text: endBlock?.text?.substring(
       selectionInfo.startIndex === selectionInfo.endIndex
@@ -107,9 +111,9 @@ export function updateBlock(
   return newBlock;
 }
 
-export function refactorChildren(block: Block): Block {
+export function refactorChildren(block: FormatableBlock): FormatableBlock {
   try {
-    const newBlock: Block = {
+    const newBlock: FormatableBlock = {
       ...block,
       children: [],
     };
@@ -120,13 +124,16 @@ export function refactorChildren(block: Block): Block {
         const comparableOne = {
           ...newBlock.children[newBlock.children.length - 1],
         };
-        comparableOne.text = undefined;
+        comparableOne.text = '';
         const comparableTwo = { ...cur };
-        comparableTwo.text = undefined;
+        comparableTwo.text = '';
         if (JSON.stringify(comparableOne) === JSON.stringify(comparableTwo)) {
           const prev = newBlock.children.pop();
           if (prev && prev.text !== undefined && cur.text !== undefined) {
-            const newPushable: Child = { ...prev, text: prev.text + cur.text };
+            const newPushable: FormatableChild = {
+              ...prev,
+              text: prev.text + cur.text,
+            };
             newBlock.children.push(newPushable);
           }
         } else {
@@ -142,8 +149,8 @@ export function refactorChildren(block: Block): Block {
 }
 
 export function useTestFormat(
-  value: Block,
-  test: (val: Child) => boolean,
+  value: FormatableBlock,
+  test: (val: FormatableChild) => boolean,
   selectionInfo?: SelectionInfo | null
 ): boolean {
   const isActive = useMemo(() => {

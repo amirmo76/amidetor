@@ -1,3 +1,3 @@
-export { Data } from './paragraph.types';
-
-export { default, TYPE, getEmptyBlock } from './paragraph.component';
+export { ParagraphBlock, ParagraphChild } from './paragraph.types';
+export const TYPE = 'paragraph';
+export { default, getEmptyBlock } from './paragraph.component';

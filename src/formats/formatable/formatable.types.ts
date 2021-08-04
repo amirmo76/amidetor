@@ -1,6 +1,9 @@
-import { Block } from '../../blocks/blocks.types';
 import { OnChangeFunction } from '../../editor/editor.types';
-import { Formatter } from '../formatters.types';
+import {
+  FormatableBlock,
+  FormatableChild,
+  Formatter,
+} from '../formatters.types';
 
 export type MenuPosition = {
   leftOffset: number;
@@ -9,6 +12,6 @@ export type MenuPosition = {
 
 export type FormatableProps = {
   formatters: Formatter[];
-  value: Block;
-  onChange: OnChangeFunction;
+  value: FormatableBlock;
+  onChange: OnChangeFunction<any, FormatableChild>;
 };

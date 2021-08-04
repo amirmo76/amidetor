@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from '@cypress/react';
 import * as Stories from './paragraph.stories';
 import Paragraph, { getData, getHTML } from './paragraph.component';
-import { Data, ParagraphProps } from './paragraph.types';
+import { ParagraphBlock, ParagraphProps } from './paragraph.types';
 import { Block } from '../blocks.types';
 import { setSelection } from '../../helpers';
 
@@ -28,7 +28,8 @@ describe('Paragraph Component', () => {
           },
         ],
       },
-      onChange: (data: Block) => console.log(data),
+      className: 'test',
+      onChange: (data: ParagraphBlock) => console.log(data),
     };
   });
 
@@ -133,7 +134,7 @@ describe('Paragraph Component', () => {
         expect(stub1).to.be.calledOnceWith({
           ...props.value,
           textAlign: 'center',
-        } as Data);
+        } as ParagraphBlock);
       });
     // Text align left
     const stub2 = cy.stub();
@@ -144,7 +145,7 @@ describe('Paragraph Component', () => {
         expect(stub2).to.be.calledWith({
           ...props.value,
           textAlign: 'left',
-        } as Data);
+        } as ParagraphBlock);
       });
     // Text align right
     const stub3 = cy.stub();
@@ -155,7 +156,7 @@ describe('Paragraph Component', () => {
         expect(stub3).to.be.calledWith({
           ...props.value,
           textAlign: 'right',
-        } as Data);
+        } as ParagraphBlock);
       });
   });
 
@@ -169,7 +170,7 @@ describe('Paragraph Component', () => {
         expect(stub1).to.be.calledOnceWith({
           ...props.value,
           direction: 'ltr',
-        } as Data);
+        } as ParagraphBlock);
       });
     // rtl
     const stub2 = cy.stub();
@@ -180,12 +181,12 @@ describe('Paragraph Component', () => {
         expect(stub2).to.be.calledWith({
           ...props.value,
           direction: 'rtl',
-        } as Data);
+        } as ParagraphBlock);
       });
   });
 
   it('should call the onChange correctly in combinational settings scenario', () => {
-    const value: Data = {
+    const value: ParagraphBlock = {
       type: 'paragraph',
       children: [],
       textAlign: 'center',
@@ -198,12 +199,12 @@ describe('Paragraph Component', () => {
         expect(stub1).to.be.calledOnceWith({
           ...value,
           direction: 'ltr',
-        } as Data);
+        } as ParagraphBlock);
       });
   });
 
   it('should apply bold, italic and underline formats correctly', () => {
-    const block: Data = {
+    const block: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -212,7 +213,7 @@ describe('Paragraph Component', () => {
       ],
     };
     const callback = cy.stub();
-    mount(<Paragraph value={block} onChange={callback} />);
+    mount(<Paragraph value={block} onChange={callback} className="Test" />);
     setSelection(
       'p',
       {
@@ -241,7 +242,7 @@ describe('Paragraph Component', () => {
               text: ' name is amir',
             },
           ],
-        } as Data);
+        } as ParagraphBlock);
       })
       .get('[aria-label="format italic"]')
       .click()
@@ -260,7 +261,7 @@ describe('Paragraph Component', () => {
               text: ' name is amir',
             },
           ],
-        } as Data);
+        } as ParagraphBlock);
       })
       .get('[aria-label="format underline"]')
       .click()
@@ -279,12 +280,12 @@ describe('Paragraph Component', () => {
               text: ' name is amir',
             },
           ],
-        } as Data);
+        } as ParagraphBlock);
       });
   });
 
   it('should apply bold styles', () => {
-    const block: Data = {
+    const block: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -296,12 +297,12 @@ describe('Paragraph Component', () => {
         },
       ],
     };
-    mount(<Paragraph value={block} onChange={() => {}} />);
+    mount(<Paragraph value={block} onChange={() => {}} className="Test" />);
     cy.get('p span:nth-child(2)').should('have.css', 'font-weight', '700');
   });
 
   it('should apply italic styles', () => {
-    const block: Data = {
+    const block: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -313,12 +314,12 @@ describe('Paragraph Component', () => {
         },
       ],
     };
-    mount(<Paragraph value={block} onChange={() => {}} />);
+    mount(<Paragraph value={block} onChange={() => {}} className="Test" />);
     cy.get('p span:nth-child(2)').should('have.css', 'font-style', 'italic');
   });
 
   it('should apply underline styles', () => {
-    const block: Data = {
+    const block: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -330,7 +331,7 @@ describe('Paragraph Component', () => {
         },
       ],
     };
-    mount(<Paragraph value={block} onChange={() => {}} />);
+    mount(<Paragraph value={block} onChange={() => {}} className="Test" />);
     cy.get('p span:nth-child(2)').should(
       'have.css',
       'text-decoration-line',
@@ -339,7 +340,7 @@ describe('Paragraph Component', () => {
   });
 
   it('should call the onChange on blur with the correct formats', () => {
-    const pBlock: Data = {
+    const pBlock: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -349,7 +350,7 @@ describe('Paragraph Component', () => {
       ],
     };
     const callback = cy.stub();
-    mount(<Paragraph value={pBlock} onChange={callback} />);
+    mount(<Paragraph value={pBlock} onChange={callback} className="Test" />);
     cy.get('p')
       .then(($el) => {
         const p = $el[0];
@@ -366,14 +367,14 @@ describe('Paragraph Component', () => {
               bold: true,
             },
           ],
-        } as Data);
+        } as ParagraphBlock);
       });
   });
 });
 
 describe('getData Function', () => {
   it('should get correct data from simple spans', () => {
-    const block: Data = {
+    const block: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -403,7 +404,7 @@ describe('getData Function', () => {
 
 describe('getHTML Function', () => {
   it('should get correct HTML from the given object', () => {
-    const sampleData: Data = {
+    const sampleData: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {
@@ -423,7 +424,7 @@ describe('getHTML Function', () => {
   });
 
   it('should escape html tags properly', () => {
-    const sampleData: Data = {
+    const sampleData: ParagraphBlock = {
       type: 'paragraph',
       children: [
         {

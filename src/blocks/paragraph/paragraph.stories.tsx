@@ -26,6 +26,7 @@ const props: ParagraphProps = {
       },
     ],
   },
+  className: 'test',
   onChange: () => {},
 };
 

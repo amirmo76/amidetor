@@ -7,7 +7,7 @@ import Italic from '../../formats/formatters/italic';
 import Underline from '../../formats/formatters/underline';
 import {
   ParagraphProps,
-  Data,
+  ParagraphBlock,
   SettingKeys,
   SettingsValues,
 } from './paragraph.types';
@@ -20,10 +20,11 @@ import {
 } from './paragraph.icons';
 import './paragraph.styles.scss';
 
-export const TYPE = 'paragraph';
-
-export function getData(pNode: HTMLParagraphElement, block: Data): Data {
-  const newData: Data = {
+export function getData(
+  pNode: HTMLParagraphElement,
+  block: ParagraphBlock
+): ParagraphBlock {
+  const newData: ParagraphBlock = {
     type: 'paragraph',
     children: Array.from(pNode.childNodes).map((node, i) => ({
       ...block.children[i],
@@ -41,7 +42,7 @@ export function escape(str: string): string {
   return out;
 }
 
-export function getHTML(data: Data): string {
+export function getHTML(data: ParagraphBlock): string {
   let html = '';
 
   data.children.map((node) => {
@@ -71,7 +72,7 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
 
   const updateSettings = (key: SettingKeys, val: SettingsValues): void => {
     if (!ref.current) return;
-    const newData: Data = {
+    const newData: ParagraphBlock = {
       ...value,
       ...getData(ref.current, value),
       [key]: val,
@@ -141,7 +142,7 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
   );
 }
 
-export function getEmptyBlock(): Data {
+export function getEmptyBlock(): ParagraphBlock {
   return {
     type: 'paragraph',
     children: [],
