@@ -1,0 +1,45 @@
+.amidetor {
+  &__dropdown {
+    min-width: 200px;
+    width: max-content;
+    box-shadow: rgba(0, 0, 0, 0.03) 0px 3px 10px;
+    padding: 10px;
+
+    & > input {
+      width: 100%;
+      font-family: inherit;
+      font-size: inherit;
+      margin-bottom: 25px;
+      background-color: rgb(250, 250, 250);
+      border: 1px solid rgb(240, 240, 240);
+      padding: 7px 15px;
+      border-radius: 5px;
+    }
+  }
+
+  &__dropdown-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 7px 5px;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+
+    & > h2 {
+      font-size: inherit;
+      font-weight: inherit;
+      margin: 0;
+      padding: 0;
+    }
+
+    &:hover {
+      background-color: rgb(250, 250, 250);
+    }
+
+    & svg {
+      fill: grey;
+      margin-right: 10px;
+    }
+  }
+}
