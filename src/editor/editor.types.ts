@@ -6,6 +6,8 @@ export type EditorRegisteredBlock = {
   TYPE: string;
   Component: (props: BlockProps<any, any>) => JSX.Element;
   getEmptyBlock: () => EditorBlock;
+  Icon: () => JSX.Element;
+  title: string;
 };
 
 export type EditorProps = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Paragraph, { getEmptyBlock } from '../blocks/paragraph';
+import Paragraph, { getEmptyBlock, Icons, TYPE } from '../blocks/paragraph';
 import Editor from './editor.component';
 
 export default {
@@ -12,9 +12,11 @@ export const withParagraphBlock = () => (
   <Editor
     blocks={[
       {
-        TYPE: 'paragraph',
+        TYPE: TYPE,
         getEmptyBlock: getEmptyBlock,
         Component: Paragraph,
+        title: 'paragraph',
+        Icon: Icons.ParagraphIcon,
       },
     ]}
     defaultValue={[
