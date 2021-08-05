@@ -22,22 +22,22 @@ describe('Dropdown Component', () => {
     props = {
       items: [
         {
-          type: 'p',
+          TYPE: 'p',
           title: 'paragraph',
           Icon: TestIcon,
         },
         {
-          type: 'h',
+          TYPE: 'h',
           title: 'heading',
           Icon: TestIcon,
         },
         {
-          type: 'img',
+          TYPE: 'img',
           title: 'image',
           Icon: TestIcon,
         },
         {
-          type: 'video',
+          TYPE: 'video',
           title: 'video',
           Icon: TestIcon,
         },

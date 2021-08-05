@@ -1,5 +1,5 @@
 export type DropdownItem = {
-  type: string;
+  TYPE: string;
   title: string;
   Icon: () => JSX.Element;
 };

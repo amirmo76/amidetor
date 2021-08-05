@@ -20,7 +20,7 @@ function Dropdown({ items, onClick }: DropdownProps) {
             key={i}
             className="amidetor__dropdown-item"
             role="button"
-            onClick={() => onClick && onClick(item.type)}
+            onClick={() => onClick && onClick(item.TYPE)}
           >
             <item.Icon />
             <h2>{item.title}</h2>
