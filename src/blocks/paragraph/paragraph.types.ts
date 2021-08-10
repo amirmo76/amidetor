@@ -1,4 +1,5 @@
 import { Block, BlockProps } from '../blocks.types';
+import { Formatter } from '../../formats/formatters.types';
 
 export type ParagraphChild = {
   text: string;
@@ -19,6 +20,7 @@ export interface ParagraphBlock extends Block<'paragraph', ParagraphChild> {
 export interface ParagraphProps
   extends BlockProps<'paragraph', ParagraphChild> {
   value: ParagraphBlock;
+  formatters?: Formatter[];
 }
 
 export type SettingKeys = 'direction' | 'textAlign';

@@ -57,7 +57,12 @@ export function getHTML(data: ParagraphBlock, formatters: Formatter[]): string {
   return html;
 }
 
-function Paragraph({ value, onChange, className }: ParagraphProps) {
+function Paragraph({
+  value,
+  onChange,
+  className,
+  formatters = [Bold, Italic, Underline],
+}: ParagraphProps) {
   const [editable, setEditable] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
 
@@ -118,11 +123,7 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
           active={value.direction === 'rtl'}
         />
       </div>
-      <Formatable
-        value={value}
-        onChange={onChange}
-        formatters={[Bold, Italic, Underline]}
-      >
+      <Formatable value={value} onChange={onChange} formatters={formatters}>
         {React.createElement('p', {
           ref: ref,
           contentEditable: editable,
@@ -131,7 +132,7 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
           className: `${className ? className + ' ' : ''}amidetor__paragraph`,
           onClick: () => setEditable(true),
           dangerouslySetInnerHTML: {
-            __html: getHTML(value, [Bold, Italic, Underline]),
+            __html: getHTML(value, formatters),
           },
           style: styles,
           onBlur: () =>
