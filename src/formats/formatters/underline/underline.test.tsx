@@ -6,6 +6,7 @@ import {
   SelectionInfo,
 } from '../../formatters.types';
 import Underline from './underline.component';
+import { editorApply } from './underline.utils';
 
 describe('Underline Component', () => {
   let props: FormatterProps;
@@ -163,5 +164,23 @@ describe('Underline Component', () => {
           ],
         } as FormatableBlock);
       });
+  });
+});
+
+describe('editorApply Function', () => {
+  it('should return correct style string', () => {
+    const node = {
+      text: 'Hello',
+      underline: true,
+    };
+    const styles = editorApply(node, '');
+    expect(styles).to.be.equal('text-decoration: underline;');
+
+    const styles2 = editorApply(node, 'something; ');
+    expect(styles2).to.be.equal('something; text-decoration: underline;');
+
+    node.underline = false;
+    const styles3 = editorApply(node, 'something; ');
+    expect(styles3).to.be.equal('something; ');
   });
 });

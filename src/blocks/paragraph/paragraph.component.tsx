@@ -19,6 +19,7 @@ import {
   TextAlignLeftIcon,
 } from './paragraph.icons';
 import './paragraph.styles.scss';
+import { Formatter } from '../../formats/formatters.types';
 
 export function getData(
   pNode: HTMLParagraphElement,
@@ -42,14 +43,12 @@ export function escape(str: string): string {
   return out;
 }
 
-export function getHTML(data: ParagraphBlock): string {
+export function getHTML(data: ParagraphBlock, formatters: Formatter[]): string {
   let html = '';
 
   data.children.map((node) => {
     let styles: string = '';
-    if (node.bold) styles += 'font-weight: 700;';
-    if (node.italic) styles += 'font-style: italic;';
-    if (node.underline) styles += 'text-decoration: underline;';
+    formatters.forEach((cur) => (styles = cur.editorApply(node, styles)));
     if (node.text)
       html += `<span${styles ? ` style="${styles}"` : ''}>${escape(
         node.text
@@ -131,7 +130,9 @@ function Paragraph({ value, onChange, className }: ParagraphProps) {
           onKeyDown: keyHandle,
           className: `${className ? className + ' ' : ''}amidetor__paragraph`,
           onClick: () => setEditable(true),
-          dangerouslySetInnerHTML: { __html: getHTML(value) },
+          dangerouslySetInnerHTML: {
+            __html: getHTML(value, [Bold, Italic, Underline]),
+          },
           style: styles,
           onBlur: () =>
             ref.current &&

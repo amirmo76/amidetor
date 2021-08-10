@@ -3,6 +3,7 @@ import { mount } from '@cypress/react';
 import { FormatterProps, SelectionInfo } from '../../formatters.types';
 import Italic from './italic.component';
 import { FormatableBlock } from '../../formatters.types';
+import { editorApply } from './italic.utils';
 
 describe('Italic Formatter', () => {
   let props: FormatterProps;
@@ -151,5 +152,23 @@ describe('Italic Formatter', () => {
           ],
         } as FormatableBlock);
       });
+  });
+});
+
+describe('editorApply Function', () => {
+  it('should return correct style string', () => {
+    const node = {
+      text: 'Hello',
+      italic: true,
+    };
+    const styles = editorApply(node, '');
+    expect(styles).to.be.equal('font-style: italic;');
+
+    const styles2 = editorApply(node, 'something; ');
+    expect(styles2).to.be.equal('something; font-style: italic;');
+
+    node.italic = false;
+    const styles3 = editorApply(node, 'something; ');
+    expect(styles3).to.be.equal('something; ');
   });
 });

@@ -43,20 +43,7 @@ export const Primary = () => (
   </Formatable>
 );
 
-const formatters: Formatter[] = [
-  {
-    Component: Bold.Component,
-    KEY: Bold.KEY,
-  },
-  {
-    Component: Italic.Component,
-    KEY: Italic.KEY,
-  },
-  {
-    Component: Underline.Component,
-    KEY: Underline.KEY,
-  },
-];
+const formatters: Formatter[] = [Bold, Italic, Underline];
 
 export const WithFormatters = () => (
   <Formatable

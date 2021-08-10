@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from '@cypress/react';
 import { FormatableBlock } from '../../formatters.types';
 import Bold from './bold.component';
+import { editorApply } from './bold.utils';
 
 describe('Bold Formatter', () => {
   let block: FormatableBlock;
@@ -174,5 +175,23 @@ describe('Bold Formatter', () => {
           ],
         } as FormatableBlock);
       });
+  });
+});
+
+describe('editorApply Function', () => {
+  it('should return correct style string', () => {
+    const node = {
+      text: 'Hello',
+      bold: true,
+    };
+    const styles = editorApply(node, '');
+    expect(styles).to.be.equal('font-weight: 700;');
+
+    const styles2 = editorApply(node, 'something; ');
+    expect(styles2).to.be.equal('something; font-weight: 700;');
+
+    node.bold = false;
+    const styles3 = editorApply(node, 'something; ');
+    expect(styles3).to.be.equal('something; ');
   });
 });

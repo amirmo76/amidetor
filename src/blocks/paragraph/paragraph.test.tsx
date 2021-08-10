@@ -417,7 +417,7 @@ describe('getHTML Function', () => {
         },
       ],
     };
-    const html = getHTML(sampleData);
+    const html = getHTML(sampleData, []);
     const expected = '<span>My </span><span> name is A</span><span>mir</span>';
     expect(html).to.equal(expected);
   });
@@ -434,7 +434,7 @@ describe('getHTML Function', () => {
         },
       ],
     };
-    const html = getHTML(sampleData);
+    const html = getHTML(sampleData, []);
     const expected =
       '<span>M&quot;y </span><span> n&amp;ame i&#39;s &lt;bold&gt;Amir&lt;/bold&gt;</span>';
     expect(html).to.equal(expected);

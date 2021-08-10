@@ -21,7 +21,13 @@ export interface FormatterProps {
   selectionInfo?: SelectionInfo | null;
 }
 
+export type EditorApplyFunction = (
+  node: FormatableChild,
+  style: string
+) => string;
+
 export interface Formatter {
   Component(props: FormatterProps): JSX.Element;
   KEY: string;
+  editorApply: EditorApplyFunction;
 }
