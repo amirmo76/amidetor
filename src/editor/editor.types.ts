@@ -11,7 +11,8 @@ export type EditorRegisteredBlock = {
 };
 
 export type EditorProps = {
-  defaultValue?: EditorBlock[];
+  value: EditorBlock[];
+  onChange: (value: EditorBlock[]) => any;
   blocks: EditorRegisteredBlock[];
 };
 

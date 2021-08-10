@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { mount } from '@cypress/react';
 import * as Stories from './editor.stories';
 import Paragraph, { getEmptyBlock, Icons, TYPE } from '../blocks/paragraph';
@@ -11,44 +11,46 @@ const CustomBlockComponent = ({ value }: BlockProps<string, any>) => {
 };
 
 describe('Custom Components', () => {
-  let props: EditorProps;
-
-  beforeEach(() => {
-    props = {
-      defaultValue: [
-        {
-          type: 'test-block',
-          children: [
-            {
-              text: 'Hello test block!',
-            },
-          ],
-        },
-      ],
-      blocks: [
-        {
-          TYPE: TYPE,
-          title: 'paragraph',
-          Icon: Icons.ParagraphIcon,
-          getEmptyBlock,
-          Component: Paragraph,
-        },
-        {
-          TYPE: 'test-block',
-          title: 'test block',
-          getEmptyBlock: () => ({
-            type: 'test-block',
-            children: [{ text: 'some value' }],
-          }),
-          Icon: Icons.LtrIcon,
-          Component: CustomBlockComponent,
-        },
-      ],
-    };
-  });
+  const Parent = () => {
+    const [data, setData] = useState([
+      {
+        type: 'test-block',
+        children: [
+          {
+            text: 'Hello test block!',
+          },
+        ],
+      },
+    ]);
+    return (
+      <Editor
+        value={data}
+        onChange={(val) => setData(val)}
+        blocks={[
+          {
+            TYPE: TYPE,
+            title: 'paragraph',
+            Icon: Icons.ParagraphIcon,
+            getEmptyBlock,
+            Component: Paragraph,
+          },
+          {
+            TYPE: 'test-block',
+            title: 'test block',
+            getEmptyBlock: () => ({
+              type: 'test-block',
+              children: [{ text: 'some value' }],
+            }),
+            Icon: Icons.LtrIcon,
+            Component: CustomBlockComponent,
+          },
+        ]}
+      />
+    );
+  };
 
   it('should add the custom blocks to the add new block dropdown', () => {
-    mount(<Editor {...props} />);
+    mount(<Parent />);
     cy.get(
       ':nth-child(1) > .amidetor__actions > [aria-label="add a new block"]'
     )
@@ -59,7 +61,7 @@ describe('Custom Components', () => {
   });
 
   it(' should detect to make use of the custom block from the data', () => {
-    mount(<Editor {...props} />);
+    mount(<Parent />);
     cy.contains('Hello test block!');
   });
 

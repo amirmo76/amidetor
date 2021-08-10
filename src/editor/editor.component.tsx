@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { EditorProps, EditorBlock } from './editor.types';
 import Button from '../button';
 import { PlusIcon, DeleteIcon, CloseIcon } from './editor.icons';
 import Dropdown from '../dropdown';
 import './editor.styles.scss';
 
-const Editor = ({ defaultValue, blocks }: EditorProps) => {
-  const [data, setData] = useState(defaultValue);
+const Editor = ({ value, onChange, blocks }: EditorProps) => {
   const [dropdown, setDropdown] = useState({
     isOpen: false,
     index: 0,
   });
-  useEffect(() => console.log('The data is: ', data));
 
   const newDataHandler = (index: number, newData: EditorBlock) => {
-    if (data) {
-      setData(data.map((cur, i) => (index === i ? newData : cur)));
+    if (value) {
+      onChange(value.map((cur, i) => (index === i ? newData : cur)));
     } else {
-      setData([newData]);
+      onChange([newData]);
     }
   };
 
   const removeBlock = (index: number): void =>
-    setData(data?.filter((_, i) => i !== index));
+    onChange(value.filter((_, i) => i !== index));
 
   return (
     <div data-testid="amidetor" className="amidetor">
-      {data?.map((block, i) => {
+      {value?.map((block, i) => {
         const foundBlock = blocks.find((cur) => cur.TYPE === block.type);
         if (!foundBlock) return null;
 
@@ -56,9 +54,9 @@ const Editor = ({ defaultValue, blocks }: EditorProps) => {
                         .find((cur) => cur.TYPE === type)
                         ?.getEmptyBlock();
                       if (!newBlock) return;
-                      const prevBlocks = data.filter((_, index) => index <= i);
-                      const afterBlocks = data.filter((_, index) => index > i);
-                      setData([...prevBlocks, newBlock, ...afterBlocks]);
+                      const prevBlocks = value.filter((_, index) => index <= i);
+                      const afterBlocks = value.filter((_, index) => index > i);
+                      onChange([...prevBlocks, newBlock, ...afterBlocks]);
                       setDropdown((prev) => ({
                         ...prev,
                         isOpen: false,
@@ -79,12 +77,7 @@ const Editor = ({ defaultValue, blocks }: EditorProps) => {
       <button
         type="button"
         className="amidetor__new"
-        onClick={() => {
-          if (!data) setData([blocks[0].getEmptyBlock()]);
-          else {
-            setData([...data, blocks[0].getEmptyBlock()]);
-          }
-        }}
+        onClick={() => onChange([...value, blocks[0].getEmptyBlock()])}
       >
         NEW BLOCK
       </button>
