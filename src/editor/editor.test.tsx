@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from '@cypress/react';
+import * as Stories from './editor.stories';
 import Paragraph, { getEmptyBlock, Icons, TYPE } from '../blocks/paragraph';
 import Editor from './editor.component';
 import { EditorProps } from './editor.types';
@@ -60,5 +61,17 @@ describe('Custom Components', () => {
   it(' should detect to make use of the custom block from the data', () => {
     mount(<Editor {...props} />);
     cy.contains('Hello test block!');
+  });
+
+  it('should display new block at the bottom', () => {
+    mount(<Stories.withParagraphBlock />);
+    cy.contains('NEW BLOCK');
+  });
+
+  it('should add a new block of the first given block type pn clicking new block button', () => {
+    mount(<Stories.WithNoDefaultValue />);
+    cy.contains('NEW BLOCK')
+      .click()
+      .then(() => cy.get('p').should('be.visible'));
   });
 });

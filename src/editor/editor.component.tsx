@@ -76,6 +76,18 @@ const Editor = ({ defaultValue, blocks }: EditorProps) => {
           </div>
         );
       })}
+      <button
+        type="button"
+        className="amidetor__new"
+        onClick={() => {
+          if (!data) setData([blocks[0].getEmptyBlock()]);
+          else {
+            setData([...data, blocks[0].getEmptyBlock()]);
+          }
+        }}
+      >
+        NEW BLOCK
+      </button>
     </div>
   );
 };

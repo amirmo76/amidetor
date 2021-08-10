@@ -49,3 +49,17 @@ export const withParagraphBlock = () => (
     ]}
   />
 );
+
+export const WithNoDefaultValue = () => (
+  <Editor
+    blocks={[
+      {
+        TYPE: TYPE,
+        getEmptyBlock: getEmptyBlock,
+        Component: Paragraph,
+        title: 'paragraph',
+        Icon: Icons.ParagraphIcon,
+      },
+    ]}
+  />
+);
