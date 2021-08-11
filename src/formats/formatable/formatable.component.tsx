@@ -36,7 +36,6 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
   );
 
   useEffect(() => {
-    console.log(selectionInfo);
     if (selectionInfo) setShowMenu(true);
     const selection = window.getSelection();
     if (!selection) return;

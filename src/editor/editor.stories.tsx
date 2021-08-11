@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Paragraph, { getEmptyBlock, Icons, TYPE } from '../blocks/paragraph';
+import { getEmptyBlock, Icons, TYPE, Paragraph } from '../blocks/paragraph';
 import Editor from './editor.component';
 
 export default {

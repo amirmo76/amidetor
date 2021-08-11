@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { mount } from '@cypress/react';
 import * as Stories from './editor.stories';
-import Paragraph, { getEmptyBlock, Icons, TYPE } from '../blocks/paragraph';
+import { getEmptyBlock, Icons, TYPE, Paragraph } from '../blocks/paragraph';
 import Editor from './editor.component';
 import { EditorProps } from './editor.types';
 import { BlockProps } from '../blocks/blocks.types';
