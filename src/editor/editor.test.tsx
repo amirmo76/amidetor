@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { mount } from '@cypress/react';
 import * as Stories from './editor.stories';
-import { getEmptyBlock, Icons, TYPE, Paragraph } from '../blocks/paragraph';
+import {
+  getEmptyBlock,
+  Icons,
+  TYPE,
+  Paragraph,
+  block,
+} from '../blocks/paragraph';
 import Editor from './editor.component';
-import { EditorProps } from './editor.types';
+import { EditorBlock } from './editor.types';
 import { BlockProps } from '../blocks/blocks.types';
 
 const CustomBlockComponent = ({ value }: BlockProps<string, any>) => {
@@ -75,5 +81,61 @@ describe('Custom Components', () => {
     cy.contains('NEW BLOCK')
       .click()
       .then(() => cy.get('p').should('be.visible'));
+  });
+
+  it('should move a block up when clicking on the move up button', () => {
+    const data: EditorBlock[] = [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            text: '1',
+          },
+        ],
+      },
+      {
+        type: 'paragraph',
+        children: [
+          {
+            text: '2',
+          },
+        ],
+      },
+    ];
+    const callback = cy.stub();
+    mount(<Editor value={data} onChange={callback} blocks={[block]} />);
+    cy.get(':nth-child(1) button[aria-label="move down"]')
+      .click()
+      .then(() => {
+        expect(callback).to.be.calledWith([data[1], data[0]]);
+      });
+  });
+
+  it('should move a block down when clicking on the move down button', () => {
+    const data: EditorBlock[] = [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            text: '1',
+          },
+        ],
+      },
+      {
+        type: 'paragraph',
+        children: [
+          {
+            text: '2',
+          },
+        ],
+      },
+    ];
+    const callback = cy.stub();
+    mount(<Editor value={data} onChange={callback} blocks={[block]} />);
+    cy.get(':nth-child(2) button[aria-label="move up"]')
+      .click()
+      .then(() => {
+        expect(callback).to.be.calledWith([data[1], data[0]]);
+      });
   });
 });

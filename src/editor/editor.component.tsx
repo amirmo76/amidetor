@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { EditorProps, EditorBlock } from './editor.types';
 import Button from '../button';
-import { PlusIcon, DeleteIcon, CloseIcon } from './editor.icons';
+import {
+  PlusIcon,
+  DeleteIcon,
+  CloseIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
+} from './editor.icons';
 import Dropdown from '../dropdown';
 import './editor.styles.scss';
 
@@ -45,6 +51,38 @@ const Editor = ({ value, onChange, blocks }: EditorProps) => {
                 onClick={() => removeBlock(i)}
                 Icon={DeleteIcon}
               />
+              <div className="amidetor__move-actions">
+                {i !== 0 && (
+                  <Button
+                    label="move up"
+                    onClick={() =>
+                      onChange(
+                        value.map((cur, index) => {
+                          if (index < i - 1 || index > i) return cur;
+                          if (index === i - 1) return value[i];
+                          return value[i - 1];
+                        })
+                      )
+                    }
+                    Icon={ArrowUpIcon}
+                  />
+                )}
+                {i !== value.length - 1 && (
+                  <Button
+                    label="move down"
+                    onClick={() =>
+                      onChange(
+                        value.map((cur, index) => {
+                          if (index < i || index > i + 1) return cur;
+                          if (index === i) return value[i + 1];
+                          return value[i];
+                        })
+                      )
+                    }
+                    Icon={ArrowDownIcon}
+                  />
+                )}
+              </div>
               {dropdown.index === i && dropdown.isOpen && (
                 <div className="amidetor__dropdown-wrapper">
                   <Dropdown

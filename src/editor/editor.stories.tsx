@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getEmptyBlock, Icons, TYPE, Paragraph } from '../blocks/paragraph';
 import Editor from './editor.component';
+import { EditorBlock } from './editor.types';
 
 export default {
   title: 'Editor',
@@ -9,7 +10,7 @@ export default {
 // export const primary = () => <Editor />;
 
 export const withParagraphBlock = () => {
-  const [data, setData] = useState([
+  const [data, setData] = useState<EditorBlock[]>([
     {
       type: 'paragraph',
       children: [
@@ -55,7 +56,7 @@ export const withParagraphBlock = () => {
 };
 
 export const WithNoDefaultValue = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<EditorBlock[]>([]);
   return (
     <Editor
       blocks={[
