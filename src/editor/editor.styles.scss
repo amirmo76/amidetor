@@ -1,4 +1,12 @@
 .amidetor {
+  ::-moz-selection {
+    background: #b3d4fc;
+  }
+
+  ::selection {
+    background: #b3d4fc;
+  }
+
   &__block {
     outline: none;
     flex-grow: 1;
