@@ -262,6 +262,52 @@ describe('updateBlock Function', () => {
       let updatedBlock = updateBlock(initBlock, selection, 'bold', true);
       expect(updatedBlock).to.deep.equal(expectedBlock);
     });
+
+    it('should update children correctly when middle parts have properties', () => {
+      initBlock = {
+        type: 'paragraph',
+        children: [
+          {
+            text: 'Lorem ipsum dolor sit amet, ',
+          },
+          {
+            text: 'consectetur',
+            bold: true,
+          },
+          {
+            text: ' adipiscing elit, sed do eiusmod tempor incididunt ut',
+          },
+        ],
+      };
+
+      const expectedBlock: Block<'paragraph', any> = {
+        type: 'paragraph',
+        children: [
+          {
+            text: 'Lorem ipsum dolor sit amet, ',
+            bold: true,
+          },
+          {
+            text: 'consectetur',
+            bold: true,
+          },
+          {
+            text: ' adipiscing elit, sed do eiusmod tempor incididunt ut',
+            bold: true,
+          },
+        ],
+      };
+
+      const selection: SelectionInfo = {
+        startIndex: 0,
+        endIndex: 2,
+        startOffset: 0,
+        endOffset: 53,
+      };
+
+      const updatedBlock = updateBlock(initBlock, selection, 'bold', true);
+      expect(updatedBlock).to.deep.equal(expectedBlock);
+    });
   });
 });
 

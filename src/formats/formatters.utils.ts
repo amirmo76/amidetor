@@ -16,18 +16,17 @@ export function updateBlock(
     children: [],
   };
 
-  const startBlock = block.children.find(
+  const startChild = block.children.find(
     (_, i) => i === selectionInfo.startIndex
   );
-  let endBlock = block.children.find((_, i) => i === selectionInfo.endIndex);
-  if (!startBlock || !endBlock) return block;
-  if (!startBlock.text || !endBlock.text) return block;
+  let endChild = block.children.find((_, i) => i === selectionInfo.endIndex);
+  if (!startChild || !endChild) return block;
+  if (!startChild.text || !endChild.text) return block;
   if (
-    startBlock.text.length - 1 < selectionInfo.startOffset ||
-    startBlock.text.length < selectionInfo.endOffset
+    startChild.text.length - 1 < selectionInfo.startOffset ||
+    endChild.text.length < selectionInfo.endOffset
   )
     return block;
-
   // add all the parts before the start index
   newBlock.children.push(
     ...block.children.filter((_, i) => i < selectionInfo.startIndex)
@@ -35,14 +34,14 @@ export function updateBlock(
 
   // split the start index
   const startFirstHalf: FormatableChild = {
-    ...startBlock,
-    text: startBlock.text.substring(0, selectionInfo.startOffset),
+    ...startChild,
+    text: startChild.text.substring(0, selectionInfo.startOffset),
   };
   if (startFirstHalf.text?.length) newBlock.children.push(startFirstHalf);
 
   const startSecondHalf: FormatableChild = {
-    ...startBlock,
-    text: startBlock.text.substring(selectionInfo.startOffset),
+    ...startChild,
+    text: startChild.text.substring(selectionInfo.startOffset),
     [key]: value,
   };
 
@@ -67,15 +66,15 @@ export function updateBlock(
   );
 
   // split the end index
-  endBlock =
+  endChild =
     selectionInfo.startIndex === selectionInfo.endIndex
       ? newBlock.children.pop()
-      : endBlock;
+      : endChild;
 
-  if (!endBlock) return block;
+  if (!endChild) return block;
   const endFirstHalf: FormatableChild = {
-    ...endBlock,
-    text: endBlock.text.substring(
+    ...endChild,
+    text: endChild.text.substring(
       0,
       selectionInfo.startIndex === selectionInfo.endIndex
         ? selectionInfo.endOffset - selectionInfo.startOffset
@@ -89,8 +88,8 @@ export function updateBlock(
   if (endFirstHalf.text?.length) newBlock.children.push(endFirstHalf);
 
   const endSecondHalf: FormatableChild = {
-    ...endBlock,
-    text: endBlock?.text?.substring(
+    ...endChild,
+    text: endChild?.text?.substring(
       selectionInfo.startIndex === selectionInfo.endIndex
         ? selectionInfo.endOffset - selectionInfo.startOffset
         : selectionInfo.endOffset
