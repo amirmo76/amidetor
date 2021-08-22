@@ -2,7 +2,9 @@ import React from 'react';
 import { mount } from '@cypress/react';
 import * as Stories from './formatable.stories';
 import { setSelection } from '../../helpers';
-import { getNodeIndex } from './formatable.component';
+import Formatable, { getNodeIndex } from './formatable.component';
+import { Formatter } from '../formatters.types';
+import Bold from '../formatters/bold';
 
 function selectSomething() {
   return setSelection(
@@ -60,6 +62,61 @@ describe('Formatable Component', () => {
       .should('be.visible')
       .get('[aria-label="format underline"]')
       .should('be.visible');
+  });
+
+  it('should apply children refactoring on update', () => {
+    const callback = cy.stub();
+    const formatters: Formatter[] = [Bold];
+    mount(
+      <Formatable
+        formatters={formatters}
+        value={{
+          type: 'paragraph',
+          children: [
+            {
+              text: 'amir',
+              bold: true,
+            },
+            {
+              text: 'mohsnei moghadam',
+            },
+          ],
+        }}
+        onChange={callback}
+      >
+        <p>
+          <span>amir</span>
+          <span>mohsnei moghadam</span>
+        </p>
+      </Formatable>
+    );
+    setSelection(
+      'p',
+      {
+        query: 'mohsnei',
+        offset: 0,
+      },
+      {
+        query: 'mohsnei',
+        offset: 3,
+      }
+    )
+      .get('[aria-label="format bold"]')
+      .click()
+      .then(() => {
+        expect(callback).to.be.calledWith({
+          type: 'paragraph',
+          children: [
+            {
+              text: 'amirmoh',
+              bold: true,
+            },
+            {
+              text: 'snei moghadam',
+            },
+          ],
+        });
+      });
   });
 
   it('should display formatters placeholder if formatters array is empty', () => {

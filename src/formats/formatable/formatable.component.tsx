@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { MenuPosition, FormatableProps } from './formatable.types';
 import { SelectionInfo } from '../formatters.types';
 import './formatable.styles.scss';
+import { refactorChildren, updateSelectionInfo } from '../formatters.utils';
 
 /**
  * Given a node element it will tell you what is that node's index
@@ -34,15 +35,39 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
   const [selectionInfo, setSelectionInfo] = useState<SelectionInfo | null>(
     null
   );
-
+  /**
+   * make a reselection.
+   **/
   useEffect(() => {
-    if (selectionInfo) setShowMenu(true);
+    try {
+      const selection = window.getSelection();
+      if (!selection || !ref.current || !selectionInfo) return;
+      const editable = ref.current.childNodes[0].childNodes[0];
+      let range = new Range();
+      range.setStart(
+        editable.childNodes[selectionInfo.startIndex].childNodes[0],
+        selectionInfo.startOffset
+      );
+      range.setEnd(
+        editable.childNodes[selectionInfo.endIndex].childNodes[0],
+        selectionInfo.endOffset
+      );
+      window.getSelection()?.removeAllRanges();
+      window.getSelection()?.addRange(range);
+    } catch {
+      window.getSelection()?.removeAllRanges();
+    }
+  }, [value, selectionInfo]);
+
+  /**
+   * Calculate left and top offset of the menu.
+   **/
+  useEffect(() => {
+    setShowMenu(!!selectionInfo);
+    if (!selectionInfo) return;
     const selection = window.getSelection();
     if (!selection) return;
 
-    /**
-     * Calculate left and top offset of the menu.
-     *  */
     let leftOffset = 0;
     let topOffset = 0;
 
@@ -71,9 +96,7 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
       leftOffset: leftOffset,
       topOffset: topOffset,
     }));
-
-    if (!selectionInfo) setShowMenu(false);
-  }, [selectionInfo]);
+  }, [selectionInfo, value]);
 
   const checkForSelection = () => {
     const selection = window.getSelection();
@@ -89,7 +112,12 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
       const endIndex = getNodeIndex(endContainer.parentNode);
       if (startIndex === endIndex && startOffset === endOffset)
         setSelectionInfo(null);
-      else
+      else if (
+        selectionInfo?.startIndex !== startIndex ||
+        selectionInfo?.endIndex !== endIndex ||
+        selectionInfo?.endOffset !== endOffset ||
+        selectionInfo?.startOffset !== startOffset
+      )
         setSelectionInfo({
           startIndex,
           startOffset,
@@ -111,7 +139,9 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
         />
       )}
       <div className="amidetor__formatable" ref={ref}>
-        <div onMouseUp={checkForSelection}>{children}</div>
+        <div onMouseUp={checkForSelection} onKeyUp={checkForSelection}>
+          {children}
+        </div>
         {showMenu && (
           <div
             className="amidetor__formatable-menu"
@@ -126,7 +156,21 @@ const Formatable: React.FunctionComponent<FormatableProps> = ({
                 <formatter.Component
                   key={i}
                   value={value}
-                  onChange={onChange}
+                  onChange={(data) => {
+                    if (!selectionInfo) onChange(data);
+                    else {
+                      const updateBlockSelectionInfo = updateSelectionInfo(
+                        data,
+                        selectionInfo
+                      );
+                      const {
+                        block: newData,
+                        selectionInfo: newSelectionInfo,
+                      } = refactorChildren(data, updateBlockSelectionInfo);
+                      onChange(newData);
+                      setSelectionInfo(newSelectionInfo);
+                    }
+                  }}
                   selectionInfo={selectionInfo}
                 />
               ))

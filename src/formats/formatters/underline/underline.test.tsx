@@ -113,53 +113,10 @@ describe('Underline Component', () => {
               underline: true,
             },
             {
-              text: 'test third child',
+              text: 'test',
             },
-          ],
-        } as FormatableBlock);
-      });
-  });
-
-  it('should apply with refactoring', () => {
-    const block: FormatableBlock = {
-      type: 'test',
-      children: [
-        {
-          text: 'Some txt.',
-          bold: true,
-        },
-        {
-          text: ' some other',
-        },
-        {
-          text: ' text',
-          underline: true,
-        },
-      ],
-    };
-    const callback = cy.stub();
-    mount(
-      <Underline
-        value={block}
-        onChange={callback}
-        selectionInfo={{
-          startIndex: 1,
-          endIndex: 1,
-          startOffset: 0,
-          endOffset: 11,
-        }}
-      />
-    );
-    cy.get('button')
-      .click()
-      .then(() => {
-        expect(callback).to.be.calledWith({
-          type: block.type,
-          children: [
-            block.children[0],
             {
-              text: ' some other text',
-              underline: true,
+              text: ' third child',
             },
           ],
         } as FormatableBlock);

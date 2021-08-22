@@ -3,6 +3,7 @@ import {
   SelectionInfo,
   FormatableChild,
   FormatableBlock,
+  Refactored,
 } from './formatters.types';
 
 export function updateBlock(
@@ -110,40 +111,66 @@ export function updateBlock(
   return newBlock;
 }
 
-export function refactorChildren(block: FormatableBlock): FormatableBlock {
+export function comapreObjects(obj1: object, obj2: object) {
+  let same = true;
+  Object.keys(obj1).forEach((k1) => {
+    if (JSON.stringify(obj1[k1]) !== JSON.stringify(obj2[k1])) same = false;
+  });
+  Object.keys(obj2).forEach((k2) => {
+    if (JSON.stringify(obj1[k2]) !== JSON.stringify(obj2[k2])) same = false;
+  });
+  return same;
+}
+
+export function refactorChildren(
+  block: FormatableBlock,
+  selectionInfo: SelectionInfo
+): Refactored {
   try {
-    const newBlock: FormatableBlock = {
-      ...block,
-      children: [],
-    };
+    const newBlock: FormatableBlock = JSON.parse(JSON.stringify(block));
+    const newSelectionInfo: SelectionInfo = JSON.parse(
+      JSON.stringify(selectionInfo)
+    );
+    let foundIndex = -1;
 
-    block.children.forEach((cur, i) => {
-      if (i === 0) newBlock.children.push(cur);
-      else {
-        const comparableOne = {
-          ...newBlock.children[newBlock.children.length - 1],
-        };
-        comparableOne.text = '';
-        const comparableTwo = { ...cur };
-        comparableTwo.text = '';
-        if (JSON.stringify(comparableOne) === JSON.stringify(comparableTwo)) {
-          const prev = newBlock.children.pop();
-          if (prev && prev.text !== undefined && cur.text !== undefined) {
-            const newPushable: FormatableChild = {
-              ...prev,
-              text: prev.text + cur.text,
-            };
-            newBlock.children.push(newPushable);
-          }
-        } else {
-          newBlock.children.push(cur);
-        }
-      }
-    });
+    for (let index = 0; index < block.children.length - 1; index++) {
+      const firstChild: FormatableChild = {
+        ...block.children[index],
+        text: '',
+      };
+      const secondChild: FormatableChild = {
+        ...block.children[index + 1],
+        text: '',
+      };
+      if (comapreObjects(firstChild, secondChild)) foundIndex = index;
+    }
 
-    return newBlock;
+    if (foundIndex < 0) return { block, selectionInfo };
+    // merge children
+    newBlock.children[foundIndex].text =
+      newBlock.children[foundIndex].text +
+      newBlock.children[foundIndex + 1].text;
+    newBlock.children = newBlock.children.filter(
+      (_, i) => i !== foundIndex + 1
+    );
+    // recalculate selection info
+    // --- start index
+    if (selectionInfo.startIndex >= foundIndex + 1)
+      newSelectionInfo.startIndex = selectionInfo.startIndex - 1;
+    // --- end index
+    if (selectionInfo.endIndex >= foundIndex + 1)
+      newSelectionInfo.endIndex = selectionInfo.endIndex - 1;
+    // --- start offset
+    if (selectionInfo.startIndex === foundIndex + 1)
+      newSelectionInfo.startOffset =
+        selectionInfo.startOffset + block.children[foundIndex].text.length;
+    // --- end offset
+    if (selectionInfo.endIndex === foundIndex + 1)
+      newSelectionInfo.endOffset =
+        selectionInfo.endOffset + block.children[foundIndex].text.length;
+    return refactorChildren(newBlock, newSelectionInfo);
   } catch {
-    return block;
+    return { block, selectionInfo };
   }
 }
 
@@ -165,4 +192,33 @@ export function useTestFormat(
     return inBetweenParts.length === hasTheFormatCount ? true : false;
   }, [value, selectionInfo, test]);
   return isActive;
+}
+
+/**
+ * It updates the selection info based on an updated block and
+ * the selection info used to get the updated block.
+ * @param block
+ * The return block of the updateBlock function when passed the
+ * selection info.
+ * @param selectionInfo
+ * the selection info used to update the block
+ * @returns
+ * The updated selection info
+ */
+export function updateSelectionInfo(
+  block: FormatableBlock,
+  selectionInfo: SelectionInfo
+): SelectionInfo {
+  const newSelectionInfo = selectionInfo;
+  // add one to the start and end index if there was a start offset
+  if (selectionInfo.startOffset) {
+    newSelectionInfo.startIndex = selectionInfo.startIndex + 1;
+    newSelectionInfo.endIndex = selectionInfo.endIndex + 1;
+  }
+  // always set the start offset to 0
+  newSelectionInfo.startOffset = 0;
+  // always set the end offset to the length of the new end index text
+  newSelectionInfo.endOffset =
+    block.children[newSelectionInfo.endIndex].text.length;
+  return newSelectionInfo;
 }

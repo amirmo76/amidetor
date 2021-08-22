@@ -1,10 +1,6 @@
 import React from 'react';
 import { FormatterProps } from '../../formatters.types';
-import {
-  updateBlock,
-  refactorChildren,
-  useTestFormat,
-} from '../../formatters.utils';
+import { updateBlock, useTestFormat } from '../../formatters.utils';
 import Button from '../../../button';
 import Icon from './italic.icon';
 
@@ -21,7 +17,7 @@ function Italic({ selectionInfo, value, onChange }: FormatterProps) {
       KEY,
       active ? undefined : true
     );
-    onChange(refactorChildren(updatedBlock));
+    onChange(updatedBlock);
   };
 
   return (

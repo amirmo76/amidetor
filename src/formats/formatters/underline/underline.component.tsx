@@ -2,11 +2,7 @@ import React from 'react';
 import Icon from './underline.icon';
 import Button from '../../../button';
 import { FormatterProps } from '../../formatters.types';
-import {
-  updateBlock,
-  refactorChildren,
-  useTestFormat,
-} from '../../formatters.utils';
+import { updateBlock, useTestFormat } from '../../formatters.utils';
 
 export const KEY = 'underline';
 
@@ -21,7 +17,7 @@ function Underline({ value, onChange, selectionInfo }: FormatterProps) {
       KEY,
       active ? undefined : true
     );
-    onChange(refactorChildren(updatedBlock));
+    onChange(updatedBlock);
   };
   return (
     <Button

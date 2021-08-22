@@ -44,7 +44,10 @@ describe('Bold Formatter', () => {
           bold: true,
         },
         {
-          text: ". I'm so happy tobe here with you testing this component",
+          text: ". I'm so happy to",
+        },
+        {
+          text: 'be here with you testing this component',
         },
       ],
     };
@@ -58,44 +61,6 @@ describe('Bold Formatter', () => {
           startOffset: 0,
           endIndex: 1,
           endOffset: 21,
-        }}
-      />
-    );
-    cy.get('button')
-      .click()
-      .then(() => {
-        expect(callback).to.be.calledWith(expectedBlock);
-      });
-  });
-
-  it('should get refactored on add', () => {
-    block.children[2].bold = true;
-    const expectedBlock: FormatableBlock = {
-      ...block,
-      children: [
-        {
-          text: 'Hello there, my name',
-          italic: true,
-        },
-        {
-          text:
-            "Amir Mohseni Moghadam. I'm so happy tobe here with you testing this component",
-          bold: true,
-        },
-      ],
-    };
-    const callback = cy.stub();
-    mount(
-      <Bold
-        value={block}
-        onChange={callback}
-        selectionInfo={{
-          startIndex: 1,
-          startOffset: 0,
-          endIndex: 1,
-          endOffset: block.children[1].text
-            ? block.children[1].text.length
-            : 21,
         }}
       />
     );

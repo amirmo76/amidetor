@@ -2,11 +2,7 @@ import React from 'react';
 import Button from '../../../button';
 import Icon from './bold.icon';
 import { FormatterProps } from '../../formatters.types';
-import {
-  updateBlock,
-  refactorChildren,
-  useTestFormat,
-} from '../../formatters.utils';
+import { updateBlock, useTestFormat } from '../../formatters.utils';
 
 export const KEY = 'bold';
 
@@ -21,7 +17,7 @@ function Bold({ value, onChange, selectionInfo }: FormatterProps) {
       KEY,
       active ? undefined : true
     );
-    onChange(refactorChildren(updatedBlock));
+    onChange(updatedBlock);
   };
 
   return (

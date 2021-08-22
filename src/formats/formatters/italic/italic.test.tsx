@@ -68,47 +68,6 @@ describe('Italic Formatter', () => {
       });
   });
 
-  it('should apply with refactoring', () => {
-    const value: FormatableBlock = {
-      type: 'some type',
-      children: [
-        {
-          text: 'hello there',
-          italic: true,
-        },
-        {
-          text: ', you!',
-        },
-      ],
-    };
-    const selection: SelectionInfo = {
-      startIndex: 1,
-      startOffset: 0,
-      endIndex: 1,
-      endOffset: 1,
-    };
-    const callback = cy.stub();
-    mount(
-      <Italic value={value} selectionInfo={selection} onChange={callback} />
-    );
-    cy.get('button')
-      .click()
-      .then(() => {
-        expect(callback).to.be.calledWith({
-          type: value.type,
-          children: [
-            {
-              text: 'hello there,',
-              italic: true,
-            },
-            {
-              text: ' you!',
-            },
-          ],
-        } as FormatableBlock);
-      });
-  });
-
   it('should detect active', () => {
     const selection: SelectionInfo = {
       startIndex: 0,

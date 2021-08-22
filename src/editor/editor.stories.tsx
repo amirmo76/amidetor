@@ -50,7 +50,10 @@ export const withParagraphBlock = () => {
         },
       ]}
       value={data}
-      onChange={(value) => setData(value)}
+      onChange={(value) => {
+        setData(value);
+        console.log(value);
+      }}
     />
   );
 };

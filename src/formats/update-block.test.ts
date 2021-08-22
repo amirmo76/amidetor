@@ -1,17 +1,9 @@
 /// <reference types="cypress" />
-
-import { mount } from '@cypress/react';
-import {
-  updateBlock,
-  refactorChildren,
-  useTestFormat,
-} from './formatters.utils';
-import { Block } from '../blocks/blocks.types';
-import { SelectionInfo } from './formatters.types';
-import React from 'react';
+import { FormatableBlock, SelectionInfo } from './formatters.types';
+import { updateBlock } from './formatters.utils';
 
 describe('updateBlock Function', () => {
-  let initBlock: Block<'paragraph', any>;
+  let initBlock: FormatableBlock;
 
   beforeEach(() => {
     initBlock = {
@@ -47,7 +39,7 @@ describe('updateBlock Function', () => {
         ],
       };
 
-      const expectedBlock: Block<'paragraph', any> = {
+      const expectedBlock: FormatableBlock = {
         type: 'paragraph',
         children: [
           {
@@ -75,7 +67,7 @@ describe('updateBlock Function', () => {
     });
 
     it('should update block correctly when the block has multiple children', () => {
-      const expectedBlock: Block<'paragraph', any> = {
+      const expectedBlock: FormatableBlock = {
         type: 'paragraph',
         children: [
           {
@@ -118,7 +110,7 @@ describe('updateBlock Function', () => {
       initBlock.children.push({
         text: '',
       });
-      const expectedBlock: Block<'paragraph', any> = {
+      const expectedBlock: FormatableBlock = {
         type: 'paragraph',
         children: [
           {
@@ -154,7 +146,7 @@ describe('updateBlock Function', () => {
     });
 
     it('should handle entire node selection', () => {
-      const expectedBlock: Block<'paragraph', any> = {
+      const expectedBlock: FormatableBlock = {
         type: 'paragraph',
         children: [
           {
@@ -221,7 +213,7 @@ describe('updateBlock Function', () => {
 
   describe('when selection is across nodes', () => {
     it('should update the block correctly', () => {
-      const expectedBlock: Block<'paragraph', any> = {
+      const expectedBlock: FormatableBlock = {
         type: 'paragraph',
         children: [
           {
@@ -280,7 +272,7 @@ describe('updateBlock Function', () => {
         ],
       };
 
-      const expectedBlock: Block<'paragraph', any> = {
+      const expectedBlock: FormatableBlock = {
         type: 'paragraph',
         children: [
           {
@@ -308,138 +300,5 @@ describe('updateBlock Function', () => {
       const updatedBlock = updateBlock(initBlock, selection, 'bold', true);
       expect(updatedBlock).to.deep.equal(expectedBlock);
     });
-  });
-});
-
-describe('refactorChildren Function', () => {
-  it("should refactor given block's children", () => {
-    const initBlock: Block<'paragraph', any> = {
-      type: 'paragraph',
-      children: [
-        {
-          text: 'Some text',
-          bold: true,
-        },
-        {
-          text: ' Amir',
-          bold: true,
-        },
-        {
-          text: '!',
-          bold: true,
-          italic: true,
-        },
-      ],
-    };
-
-    const expectedBlock: Block<'paragraph', any> = {
-      type: 'paragraph',
-      children: [
-        {
-          text: 'Some text Amir',
-          bold: true,
-        },
-        {
-          text: '!',
-          bold: true,
-          italic: true,
-        },
-      ],
-    };
-
-    const updatedBlock = refactorChildren(initBlock);
-    console.log(updatedBlock);
-    expect(updatedBlock).to.deep.equal(expectedBlock);
-  });
-
-  it('should return the same given block when no equal is found', () => {
-    const initBlock: Block<'paragraph', any> = {
-      type: 'paragraph',
-      children: [
-        {
-          text: 'Some text',
-          bold: true,
-        },
-        {
-          text: ' Amir',
-        },
-        {
-          text: '!',
-          bold: true,
-          italic: true,
-        },
-      ],
-    };
-
-    const expectedBlock = initBlock;
-
-    const updatedBlock = refactorChildren(initBlock);
-    expect(updatedBlock).to.deep.equal(expectedBlock);
-  });
-});
-
-describe('testFormat Hook', () => {
-  it('should detect active format correctly', () => {
-    const block: Block<'paragraph', any> = {
-      type: 'paragraph',
-      children: [
-        {
-          text: 'some text',
-        },
-        {
-          text: 'hello',
-          someKey: true,
-        },
-        {
-          text: 'my name',
-          someKey: true,
-        },
-        {
-          text: 'is Amir!',
-          someKey: true,
-        },
-      ],
-    };
-    const selectionInfo: SelectionInfo = {
-      startIndex: 1,
-      endIndex: 3,
-      startOffset: 2,
-      endOffset: 3,
-    };
-    function TestComponent() {
-      const active = useTestFormat(
-        block,
-        (val) => !!val['someKey'],
-        selectionInfo
-      );
-
-      return active ? <p>yes</p> : <p>no</p>;
-    }
-    mount(<TestComponent />);
-    cy.contains('yes');
-  });
-
-  it('should not detect active on empty children', () => {
-    const block: Block<'paragraph', any> = {
-      type: 'paragraph',
-      children: [],
-    };
-    const selectionInfo: SelectionInfo = {
-      startIndex: 1,
-      endIndex: 3,
-      startOffset: 2,
-      endOffset: 3,
-    };
-    function TestComponent() {
-      const active = useTestFormat(
-        block,
-        (val) => !!val['someKey'],
-        selectionInfo
-      );
-
-      return active ? <p>yes</p> : <p>no</p>;
-    }
-    mount(<TestComponent />);
-    cy.contains('no');
   });
 });

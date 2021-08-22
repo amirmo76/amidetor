@@ -31,3 +31,8 @@ export interface Formatter {
   KEY: string;
   editorApply: EditorApplyFunction;
 }
+
+export interface Refactored {
+  block: FormatableBlock;
+  selectionInfo: SelectionInfo;
+}

@@ -242,6 +242,18 @@ describe('Paragraph Component', () => {
             },
           ],
         } as ParagraphBlock);
+
+        setSelection(
+          'p',
+          {
+            query: 'My',
+            offset: 13,
+          },
+          {
+            query: 'My',
+            offset: 15,
+          }
+        );
       })
       .get('[aria-label="format italic"]')
       .click()
@@ -261,6 +273,18 @@ describe('Paragraph Component', () => {
             },
           ],
         } as ParagraphBlock);
+
+        setSelection(
+          'p',
+          {
+            query: 'My',
+            offset: 13,
+          },
+          {
+            query: 'My',
+            offset: 15,
+          }
+        );
       })
       .get('[aria-label="format underline"]')
       .click()
